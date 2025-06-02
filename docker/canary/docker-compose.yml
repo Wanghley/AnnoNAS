@@ -1,0 +1,74 @@
+services:
+  grafana:
+    user: "1000"
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_PANELS_DISABLE_SANITIZE_HTML=true
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - monitoring
+    volumes:
+      - "/home/wanghley/homelabservices/grafana/grafana-volume:/var/lib/grafana"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    user: "0"             # Run as root so it can write under /prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"
+    volumes:
+      - "/home/wanghley/homelabservices/prometheus:/prometheus"
+      - "/home/wanghley/AnnoNAS/docker/canary/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cadvisor
+    restart: always
+    ports:
+      - "8080:8080"
+    command:
+      - "-logtostderr"
+      - "-docker_only"
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker:/var/lib/docker:ro"
+      - "/dev/disk:/dev/disk:ro"
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:v1.5.0
+    container_name: nodeexporter
+    restart: always
+    ports:
+      - "9100:9100"
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)"
+      - "--no-collector.ipvs"
+    volumes:
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "/:/rootfs:ro"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
