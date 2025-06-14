@@ -1,0 +1,46 @@
+services:
+  ghostfolio:
+    image: ghostfolio/ghostfolio
+    ports:
+      - "3333:3333"
+    environment:
+      - DATABASE_URL=postgresql://ghostfolio:t54eqD8FAvk6T5Du@ghostfolio_db:5432/ghostfolio
+      - ENABLE_FEATURE_READ_ONLY_MODE=false
+      - ACCESS_TOKEN_SALT=d242396b89650e850801b235a4af3a3b3d644fb72f8154bc210d887ac8b1af62
+      - JWT_SECRET_KEY=3f493433a89ba3bf294471760fce510862e4ad2ea0df40093bbf42295813ea00e54e5b1ea83cc194be3dd42d03d7af201deae4cf02a39000e9e23d86747c8d64
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      ghostfolio_db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  ghostfolio_db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=ghostfolio
+      - POSTGRES_PASSWORD=t54eqD8FAvk6T5Du
+      - POSTGRES_DB=ghostfolio
+    volumes:
+      - ghostfolio_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghostfolio -d ghostfolio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis_data:/data
+
+volumes:
+  ghostfolio_db_data:
+  redis_data:
