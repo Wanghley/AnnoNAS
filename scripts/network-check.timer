@@ -1,0 +1,13 @@
+[Unit]
+Description=Run network-check.service every 5 minutes, but only after boot
+
+[Timer]
+# Wait 1 minute after boot (give your network stack a bit of breathing room),
+# then fire once; thereafter every 5 minutes.
+OnBootSec=1min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=yes
+
+[Install]
+WantedBy=timers.target

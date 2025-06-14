@@ -1,0 +1,22 @@
+[Unit]
+Description=Network watchdog & LED indicator
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+
+# ── Add a "wait until network-online" step ─────────────────────────
+# This will block here until the kernel has brought up ALL interfaces as "online"
+ExecStartPre=/usr/bin/nm-online -q
+# If you use NetworkManager instead of systemd-networkd, replace with:
+# ExecStartPre=/usr/bin/nm-online -q
+
+# ── Now run the actual script ───────────────────────────────────────
+ExecStart=/usr/local/bin/network-check.sh
+
+User=root
+Group=root
+
+# We do NOT set Restart= here,
+# because the timer will fire again every X minutes
