@@ -1,0 +1,70 @@
+networks:
+  annogrid:
+    external: true
+
+volumes:
+  monica_data:
+  n8n_data:
+  jellyfin_config:
+  jellyfin_cache:
+  uptime_kuma_data:
+
+services:
+  monica:
+    image: monica:apache
+    container_name: annogrid-monica
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      APP_KEY: ${MONICA_APP_KEY}
+      APP_URL: ${MONICA_URL}
+      DB_HOST: mariadb
+      DB_DATABASE: monica
+      DB_USERNAME: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - monica_data:/var/www/html/storage
+    ports:
+      - "8080:80"
+    networks:
+      - annogrid
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: annogrid-n8n
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      N8N_BASIC_AUTH_USER: ${N8N_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_USER: ${POSTGRES_USER}
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+      N8N_SECURE_COOKIE: false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    ports:
+      - "5678:5678"
+    networks:
+      - annogrid
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: annogrid-jellyfin
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - jellyfin_config:/config
+      - jellyfin_cache:/cache
+      - ${MEDIA_PATH}:/media:ro
+    ports:
+      - "8096:8096"
+    networks:
+      - annogrid
