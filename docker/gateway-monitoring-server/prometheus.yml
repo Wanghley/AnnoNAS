@@ -1,10 +1,17 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 30s
 
 scrape_configs:
-  - job_name: "anno-nodes"
+  - job_name: 'netdata-local'
+    metrics_path: '/api/v1/allmetrics'
+    params:
+      format: ['prometheus']
+    static_configs:
+      - targets: ['netdata:19999']
+
+  - job_name: 'nodes'
     static_configs:
       - targets:
-          - "100.123.0.5:9100"  # anno-app-opi3b-01 (Tailscale IP)
-          - "100.101.173.125:9100"  # anno-nas-opi3bp-01
-          - "100.75.28.18:9100"  # anno-gw-mon-rpi3bp-01
+          - 'anno-app-opi3b-01:9100'
+          - 'anno-ai-jetson-01:9100'
+          - 'anno-nas-rpi3b-01:9100'
