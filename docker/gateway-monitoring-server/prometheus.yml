@@ -1,17 +1,11 @@
-global:
-  scrape_interval: 30s
-
 scrape_configs:
-  - job_name: 'netdata-local'
-    metrics_path: '/api/v1/allmetrics'
-    params:
-      format: ['prometheus']
+  - job_name: 'monitoring server'
     static_configs:
-      - targets: ['netdata:19999']
+      - targets: ['netdata:19999', 'node-exporter:9100']
 
-  - job_name: 'nodes'
+  - job_name: 'cluster nodes'
     static_configs:
       - targets:
-          - 'anno-app-opi3b-01:9100'
-          - 'anno-ai-jetson-01:9100'
-          - 'anno-nas-rpi3b-01:9100'
+          - '100.71.104.20:9100'
+          - '100.123.183.36:9100'
+          - '100.114.225.52:9100'

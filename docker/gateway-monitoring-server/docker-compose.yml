@@ -1,11 +1,8 @@
 services:
-  # The "Brain": Scrapes metrics and stores them
+  # --- THE BRAIN ---
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.retention.time=7d' # Keep it short for SD card health
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
@@ -13,23 +10,6 @@ services:
     ports:
       - "9090:9090"
 
-  # The "Eyes": Real-time per-second hardware monitoring
-  netdata:
-    image: netdata/netdata:latest
-    container_name: netdata
-    ports:
-      - "19999:19999"
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: always
-
-  # The "Archive": Stores your logs
   loki:
     image: grafana/loki:latest
     container_name: loki
@@ -37,25 +17,49 @@ services:
       - "3100:3100"
     restart: always
 
-  # The "UI": One dashboard to rule them all
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
       - "3000:3000"
-    depends_on:
-      - prometheus
-      - loki
+    depends_on: [prometheus, loki]
     restart: always
 
-  # The "Infiltrator": Secure Zero Trust Tunnel
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    environment:
-      - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
-    command: tunnel run
+  # --- LOCAL NODE MONITORING (Merged from setup-node) ---
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
     restart: always
+    network_mode: "host"
+    pid: "host"
+    volumes:
+      - /:/host:ro,rslave
+    command: ['--path.rootfs=/host']
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: always
+    volumes:
+      - /var/log:/var/log:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: 
+      - -config.file=/etc/promtail/config.yml
+      - -config.expand-env=true
+      - -client.external-labels=host=anno-gw-mon-rpi3b-01
+
+  netdata:
+    image: netdata/netdata:latest
+    container_name: netdata
+    restart: always
+    ports:
+      - "19999:19999"
+    cap_add: [SYS_PTRACE]
+    security_opt: [apparmor:unconfined]
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
   prometheus-data:
