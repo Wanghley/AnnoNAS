@@ -6,6 +6,8 @@
 !.env.example
 
 # ignore data folder from Docker
-arlo/ha-config/
-arlo/piper-data/
-arlo/whisper-data/
+**/ha-config/
+**/piper-data/
+**/whisper-data/
+**/voice_profiles/
+**/data/
