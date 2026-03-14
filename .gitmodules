@@ -1,3 +1,6 @@
 [submodule "docker/wppconnect-server"]
 	path = docker/wppconnect-server
 	url = https://github.com/wppconnect-team/wppconnect-server.git
+[submodule "arlo/voice-matching/arlo/voice-matching/wyoming-voice-match"]
+	path = arlo/voice-matching/arlo/voice-matching/wyoming-voice-match
+	url = https://github.com/jxlarrea/wyoming-voice-match.git
