@@ -9,9 +9,9 @@ services:
     command: "chown -R ${LVA_USER_ID:-1000}:${LVA_USER_GROUP:-1000} /app/local /app/configuration /app/wakewords/custom /app/sounds/custom"
     environment:
       # Pulseaudio
-      - XDG_RUNTIME_DIR=${LVA_XDG_RUNTIME_DIR:-/run/user/1000}
-      - PULSE_SERVER=${LVA_PULSE_SERVER:-/run/user/1000/pulse/native}
-      - PULSE_COOKIE=${LVA_PULSE_COOKIE:-/run/user/1000/pulse/cookie}
+      # - XDG_RUNTIME_DIR=${LVA_XDG_RUNTIME_DIR:-/run/user/1000}
+      # - PULSE_SERVER=${LVA_PULSE_SERVER:-/run/user/1000/pulse/native}
+      # - PULSE_COOKIE=${LVA_PULSE_COOKIE:-/run/user/1000/pulse/cookie}
       # ALSA Configuration - ADD THESE TWO LINES:
       - AUDIO_INPUT_DEVICE=${AUDIO_INPUT_DEVICE:-default}
       - AUDIO_OUTPUT_DEVICE=${AUDIO_OUTPUT_DEVICE:-default}
@@ -82,7 +82,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       # Pulseaudio
       # /run/user/1000:/run/user/1000
-      - ${LVA_XDG_RUNTIME_DIR:-/run/user/1000}:${LVA_XDG_RUNTIME_DIR:-/run/user/1000}
+      # - ${LVA_XDG_RUNTIME_DIR:-/run/user/1000}:${LVA_XDG_RUNTIME_DIR:-/run/user/1000}
     depends_on:
       fix-permissions:
         condition: service_completed_successfully
