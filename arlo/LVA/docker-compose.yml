@@ -36,6 +36,7 @@ services:
 
   # Linux Voice Assistant
   # Linux Voice Assistant
+  # Linux Voice Assistant
   linux-voice-assistant:
     container_name: linux-voice-assistant
     platform: "linux/arm64"
@@ -47,10 +48,19 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      # Only use ALSA for AnnoGrid nodes
+      # --- THE KILL SWITCH ---
+      # Setting these to empty strings overrides the image defaults
+      - PULSE_SERVER=
+      - PULSE_COOKIE=
+      - XDG_RUNTIME_DIR=
+
+      # --- ALSA CONFIG ---
       - SOUNDCARD_BACKEND=alsa
       - AUDIO_INPUT_DEVICE=hw:2,0
       - AUDIO_OUTPUT_DEVICE=hw:2,0
+      
+      # Match your .env variable names if you prefer using the env_file
+      - CLIENT_NAME=${CLIENT_NAME:-arlo-node}
     cap_add:
       - SYS_NICE
     devices:
