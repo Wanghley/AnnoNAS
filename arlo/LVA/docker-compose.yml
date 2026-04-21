@@ -32,14 +32,14 @@ services:
       - AUDIO_INPUT_DEVICE=hw:2,0
       - AUDIO_OUTPUT_DEVICE=hw:2,0
       # Give PulseAudio a writable runtime dir so the startup script can proceed
-      - XDG_RUNTIME_DIR=/tmp/pulse-runtime
-      - PULSE_RUNTIME_PATH=/tmp/pulse-runtime
+      # Standard PulseAudio runtime path — the startup script is hardcoded to this location
+      - XDG_RUNTIME_DIR=/run/user/1000
     cap_add:
       - SYS_NICE
     devices:
       - /dev/snd:/dev/snd
     tmpfs:
-      - /tmp/pulse-runtime:mode=0700,uid=1000,gid=1000
+      - /run/user/1000:mode=0700,uid=1000,gid=1000
     volumes:
       - wakeword_data:/app/local
       - wakeword_custom:/app/wakewords/custom
