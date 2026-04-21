@@ -29,8 +29,7 @@ services:
     env_file: .env
     environment:
       - LVA_SOUNDCARD_BACKEND=pulse
-      - AUDIO_INPUT_DEVICE=default
-      - AUDIO_OUTPUT_DEVICE=default
+      # Leave AUDIO_INPUT/OUTPUT_DEVICE unset here; set in .env to match pactl list sources/sinks short
       # Connect to the host PulseAudio daemon (container has no internal daemon)
       - PULSE_SERVER=unix:/run/user/1000/pulse/native
       - PULSE_COOKIE=/run/user/1000/pulse/cookie
