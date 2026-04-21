@@ -21,21 +21,25 @@ services:
     init: true
     restart: unless-stopped
     network_mode: "host"
-    # --- CHANGE: Run as root to bypass PulseAuto-init logic ---
-    user: "0:0" 
+    user: "1000:1000"
+    group_add:
+      - "29"  # audio group GID
     security_opt:
       - no-new-privileges:true
-    # --- CHANGE: Add the env_file so it actually reads your .env variables ---
     env_file: .env
     environment:
       - LVA_SOUNDCARD_BACKEND=alsa
-      - SOUNDCARD_BACKEND=alsa
       - AUDIO_INPUT_DEVICE=hw:2,0
       - AUDIO_OUTPUT_DEVICE=hw:2,0
+      # Give PulseAudio a writable runtime dir so the startup script can proceed
+      - XDG_RUNTIME_DIR=/tmp/pulse-runtime
+      - PULSE_RUNTIME_PATH=/tmp/pulse-runtime
     cap_add:
       - SYS_NICE
     devices:
       - /dev/snd:/dev/snd
+    tmpfs:
+      - /tmp/pulse-runtime:mode=0700,uid=1000,gid=1000
     volumes:
       - wakeword_data:/app/local
       - wakeword_custom:/app/wakewords/custom
