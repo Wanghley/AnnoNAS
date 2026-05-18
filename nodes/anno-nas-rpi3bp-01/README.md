@@ -113,4 +113,4 @@ tar czf /mnt/storage1/backups/archive-2026-04.tar.gz /mnt/storage1/backups/old/
 
 ---
 
-**For detailed documentation see**: [../../NODES.md](../../NODES.md)
+**For detailed documentation see**: [../../docs/architecture/nodes-inventory.md](../../docs/architecture/nodes-inventory.md)

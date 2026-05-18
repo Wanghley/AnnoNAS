@@ -112,4 +112,4 @@ For Phase 2, add:
 
 ---
 
-**For detailed documentation see**: [../../NODES.md](../../NODES.md)
+**For detailed documentation see**: [../../docs/architecture/nodes-inventory.md](../../docs/architecture/nodes-inventory.md)
