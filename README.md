@@ -120,8 +120,8 @@ For detailed setup, see [GETTING_STARTED.md](docs/GETTING_STARTED.md)
 
 | Document | Purpose |
 |----------|---------|
-| **[ARCHITECTURE.md](ARCHITECTURE.md)** | Cluster design and technical decisions |
-| **[NODES.md](NODES.md)** | Node specifications and inventory |
+| **[docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md)** | Cluster design and technical decisions |
+| **[docs/architecture/nodes-inventory.md](docs/architecture/nodes-inventory.md)** | Node specifications and inventory |
 | **[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** | Installation and initial setup |
 | **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** | Service deployment procedures |
 | **[docs/NETWORK.md](docs/NETWORK.md)** | Network configuration details |

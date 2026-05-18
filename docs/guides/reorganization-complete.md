@@ -31,10 +31,10 @@ AnnoGrid/
 ```
 AnnoGrid/
 ├── 📄 README.md                    (Professional overview)
-├── 📄 ARCHITECTURE.md              (Design decisions)
-├── 📄 NODES.md                     (Cluster inventory)
-├── 📄 REPOSITORY_ORGANIZATION.md   (Usage guide)
-├── 📄 ARLO_REORGANIZATION.md       (Voice assistant guide)
+├── 📄 docs/architecture/cluster-architecture.md              (Design decisions)
+├── 📄 docs/architecture/nodes-inventory.md                     (Cluster inventory)
+├── 📄 docs/guides/repository-organization.md   (Usage guide)
+├── 📄 docs/guides/arlo-reorganization.md       (Voice assistant guide)
 ├── Makefile                        (30+ convenience commands)
 │
 ├── nodes/                          (Node-specific configs)
@@ -66,10 +66,10 @@ AnnoGrid/
 | File | Purpose |
 |------|---------|
 | **README.md** | Professional project overview with 4-node cluster |
-| **ARCHITECTURE.md** | Technical design, patterns, decisions (5000+ words) |
-| **NODES.md** | Detailed node inventory & specifications |
-| **REPOSITORY_ORGANIZATION.md** | Guide to using the new structure |
-| **ARLO_REORGANIZATION.md** | Voice assistant integration guide |
+| **docs/architecture/cluster-architecture.md** | Technical design, patterns, decisions (5000+ words) |
+| **docs/architecture/nodes-inventory.md** | Detailed node inventory & specifications |
+| **docs/guides/repository-organization.md** | Guide to using the new structure |
+| **docs/guides/arlo-reorganization.md** | Voice assistant integration guide |
 
 ### Node Directories (`/nodes`)
 
@@ -295,8 +295,8 @@ The old `/arlo` folder is now:
 ### New Documentation (40,000+ words)
 
 - Comprehensive README with cluster architecture
-- ARCHITECTURE.md with design patterns and decisions
-- NODES.md with detailed hardware specifications
+- docs/architecture/cluster-architecture.md with design patterns and decisions
+- docs/architecture/nodes-inventory.md with detailed hardware specifications
 - Complete deployment guides for 5+ services
 - Security hardening procedures
 - Troubleshooting runbooks
@@ -339,16 +339,16 @@ The old `/arlo` folder is now:
 cat README.md
 
 # Understand the architecture
-cat ARCHITECTURE.md
+cat docs/architecture/cluster-architecture.md
 
 # See your cluster inventory
-cat NODES.md
+cat docs/architecture/nodes-inventory.md
 
 # Learn how to use the repo
-cat REPOSITORY_ORGANIZATION.md
+cat docs/guides/repository-organization.md
 
 # Learn about voice assistant
-cat ARLO_REORGANIZATION.md
+cat docs/guides/arlo-reorganization.md
 ```
 
 ### 2. Check Your Cluster
@@ -416,10 +416,10 @@ docker compose logs -f linux-voice-assistant
 | Need | Read |
 |------|------|
 | **Project Overview** | `README.md` |
-| **How Things Work** | `ARCHITECTURE.md` |
-| **Node Details** | `NODES.md` |
-| **Using the Repo** | `REPOSITORY_ORGANIZATION.md` |
-| **Voice Assistant** | `ARLO_REORGANIZATION.md` + `services/deployments/voice-assistant-lva.md` |
+| **How Things Work** | `docs/architecture/cluster-architecture.md` |
+| **Node Details** | `docs/architecture/nodes-inventory.md` |
+| **Using the Repo** | `docs/guides/repository-organization.md` |
+| **Voice Assistant** | `docs/guides/arlo-reorganization.md` + `services/deployments/voice-assistant-lva.md` |
 | **Setup Instructions** | `docs/GETTING_STARTED.md` |
 | **Deploy Services** | `services/deployments/README.md` |
 | **Network Setup** | `docs/NETWORK.md` |
@@ -452,8 +452,8 @@ docker compose logs -f linux-voice-assistant
 Users should follow this progression:
 
 1. **Read** `README.md` - Get oriented
-2. **Understand** `ARCHITECTURE.md` - Learn design
-3. **Inventory** `NODES.md` - Know your hardware
+2. **Understand** `docs/architecture/cluster-architecture.md` - Learn design
+3. **Inventory** `docs/architecture/nodes-inventory.md` - Know your hardware
 4. **Setup** `docs/GETTING_STARTED.md` - Initial config
 5. **Deploy** `services/deployments/README.md` - Run services
 6. **Monitor** Access Grafana dashboards
@@ -484,7 +484,7 @@ Users should follow this progression:
 2. **Setup issues**: Read `docs/GETTING_STARTED.md`
 3. **Cluster status**: Run `make health` or `make status`
 4. **Problems**: See `docs/TROUBLESHOOTING.md`
-5. **Architecture**: Read `ARCHITECTURE.md`
+5. **Architecture**: Read `docs/architecture/cluster-architecture.md`
 6. **Node-specific**: Check `nodes/anno-*/README.md`
 
 ---

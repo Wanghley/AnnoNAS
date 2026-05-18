@@ -12,8 +12,8 @@ This document explains the new professional repository structure for AnnoGrid, o
 
 ```
 README.md                  → Main project overview (start here)
-ARCHITECTURE.md           → Technical architecture & design decisions
-NODES.md                  → Node inventory & detailed specifications
+docs/architecture/cluster-architecture.md           → Technical architecture & design decisions
+docs/architecture/nodes-inventory.md                  → Node inventory & detailed specifications
 CHANGELOG.md              → Version history
 CONTRIBUTING.md           → Contribution guidelines
 LICENSE.md                → MIT License
@@ -250,8 +250,8 @@ assets/
 ### For New Users
 
 1. **Start with [README.md](README.md)** - Get project overview
-2. **Read [ARCHITECTURE.md](ARCHITECTURE.md)** - Understand design decisions
-3. **Check [NODES.md](NODES.md)** - See your cluster inventory
+2. **Read [docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md)** - Understand design decisions
+3. **Check [docs/architecture/nodes-inventory.md](docs/architecture/nodes-inventory.md)** - See your cluster inventory
 4. **Review [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** - Set up your nodes
 5. **Explore [nodes/](nodes/)** - Node-specific configurations
 
@@ -318,8 +318,8 @@ Examples:
 | File | Purpose | Audience |
 |------|---------|----------|
 | [README.md](README.md) | Project overview | Everyone |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Design decisions | Architects, DevOps |
-| [NODES.md](NODES.md) | Node inventory | Operators |
+| [docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md) | Design decisions | Architects, DevOps |
+| [docs/architecture/nodes-inventory.md](docs/architecture/nodes-inventory.md) | Node inventory | Operators |
 | [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) | Setup guide | New users |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deployment procedures | Operators |
 | [Makefile](Makefile) | Quick commands | Everyone |
@@ -394,8 +394,8 @@ cp nodes/anno-gw-mon-rpi3bp-01/prometheus-config/targets.d/app-node.yml \
 nano nodes/anno-gw-mon-rpi3bp-01/prometheus-config/targets.d/app-node-02.yml
 # Update IP to new node
 
-# 4. Update NODES.md inventory
-nano NODES.md
+# 4. Update docs/architecture/nodes-inventory.md inventory
+nano docs/architecture/nodes-inventory.md
 # Add new node to inventory
 
 # 5. Deploy
@@ -464,7 +464,7 @@ When adding new files:
 
 4. **Link to related docs**
    ```markdown
-   See [ARCHITECTURE.md](ARCHITECTURE.md) for design decisions.
+   See [docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md) for design decisions.
    ```
 
 ---
@@ -492,8 +492,8 @@ Before committing:
 2. **Setup issues**: [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
 3. **Operations**: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 4. **Problems**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
-5. **Architecture**: [ARCHITECTURE.md](ARCHITECTURE.md)
-6. **Node details**: [NODES.md](NODES.md)
+5. **Architecture**: [docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md)
+6. **Node details**: [docs/architecture/nodes-inventory.md](docs/architecture/nodes-inventory.md)
 7. **Security**: [docs/SECURITY.md](docs/SECURITY.md)
 
 ---

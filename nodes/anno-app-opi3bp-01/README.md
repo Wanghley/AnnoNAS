@@ -214,4 +214,4 @@ docker compose up -d
 
 ---
 
-**For detailed documentation see**: [../../NODES.md](../../NODES.md)
+**For detailed documentation see**: [../../docs/architecture/nodes-inventory.md](../../docs/architecture/nodes-inventory.md)

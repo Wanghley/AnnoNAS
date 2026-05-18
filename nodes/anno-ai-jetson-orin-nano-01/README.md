@@ -198,4 +198,4 @@ watch -n 0.5 'nvidia-smi --query-gpu=utilization.gpu,utilization.memory,memory.u
 
 ---
 
-**For detailed documentation see**: [../../NODES.md](../../NODES.md)
+**For detailed documentation see**: [../../docs/architecture/nodes-inventory.md](../../docs/architecture/nodes-inventory.md)
