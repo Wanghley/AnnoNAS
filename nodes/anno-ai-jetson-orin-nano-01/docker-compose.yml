@@ -1,0 +1,118 @@
+version: '3.8'
+
+# AI/ML Workload Node (anno-ai-jetson-orin-nano-01)
+# NVIDIA Jetson Orin Nano (8GB RAM, 128GB NVMe)
+# Purpose: GPU-accelerated machine learning inference and processing
+
+services:
+  # Node Exporter - Prometheus metrics (includes GPU stats)
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - annogrid-net
+    labels:
+      - "com.annogrid.component=monitoring"
+      - "com.annogrid.node=anno-ai-jetson-orin-nano-01"
+
+  # Example: TensorFlow Serving (Model Inference)
+  # Uncomment and configure for your ML models
+  # tensorflow-serving:
+  #   image: tensorflow/serving:latest-gpu
+  #   container_name: tensorflow-serving
+  #   restart: always
+  #   runtime: nvidia
+  #   ports:
+  #     - "8500:8500"    # gRPC port
+  #     - "8501:8501"    # REST port
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #     - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+  #   volumes:
+  #     - ./models:/models
+  #   command: >
+  #     /usr/bin/tensorflow_model_server
+  #     --port=8500
+  #     --rest_api_port=8501
+  #     --model_config_file=/models/models.config
+  #   networks:
+  #     - annogrid-net
+  #   labels:
+  #     - "com.annogrid.component=ml-inference"
+  #     - "com.annogrid.node=anno-ai-jetson-orin-nano-01"
+
+  # Example: PyTorch Model Server
+  # Uncomment and configure for PyTorch models
+  # pytorch-serving:
+  #   image: pytorch/torchserve:latest-gpu
+  #   container_name: pytorch-serving
+  #   restart: always
+  #   runtime: nvidia
+  #   ports:
+  #     - "8080:8080"    # Inference port
+  #     - "8081:8081"    # Management port
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #     - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+  #   volumes:
+  #     - ./models:/home/model-server/model-store
+  #   networks:
+  #     - annogrid-net
+  #   labels:
+  #     - "com.annogrid.component=ml-inference"
+  #     - "com.annogrid.node=anno-ai-jetson-orin-nano-01"
+
+  # Example: Custom ML Application
+  # Uncomment and build your own image with TensorFlow/PyTorch
+  # ml-app:
+  #   build:
+  #     context: ./ml-app
+  #     dockerfile: Dockerfile
+  #   container_name: ml-app
+  #   restart: always
+  #   runtime: nvidia
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #     - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+  #     - CUDA_VISIBLE_DEVICES=0
+  #     - TF_CPP_MIN_LOG_LEVEL=2
+  #     - CUDA_MODULE_LOADING=LAZY
+  #   volumes:
+  #     - ml-data:/app/data
+  #     - ./models:/app/models:ro
+  #   depends_on:
+  #     - node-exporter
+  #   networks:
+  #     - annogrid-net
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #   labels:
+  #     - "com.annogrid.component=ml-application"
+  #     - "com.annogrid.node=anno-ai-jetson-orin-nano-01"
+
+networks:
+  annogrid-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  ml-data:
+    driver: local
