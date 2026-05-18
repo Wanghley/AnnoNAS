@@ -1,0 +1,84 @@
+version: '3.8'
+
+# Application Server Node (anno-app-opi3bp-01)
+# Orange Pi 3B+
+# Purpose: Run user-facing web services and applications
+
+services:
+  # Node Exporter - Prometheus metrics collection
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - annogrid-net
+    labels:
+      - "com.annogrid.component=monitoring"
+      - "com.annogrid.node=anno-app-opi3bp-01"
+
+  # Example: Nginx Web Server
+  # Uncomment and customize as needed
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: nginx
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - app-data:/usr/share/nginx/html
+  #   networks:
+  #     - annogrid-net
+  #   labels:
+  #     - "com.annogrid.component=web-server"
+  #     - "com.annogrid.node=anno-app-opi3bp-01"
+
+  # Example: Application Container
+  # Uncomment and customize for your application
+  # app:
+  #   image: your-app:latest
+  #   container_name: app
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - ENVIRONMENT=production
+  #     - LOG_LEVEL=info
+  #     - DATABASE_URL=postgres://user:pass@anno-nas-rpi3bp-01:5432/appdb
+  #   volumes:
+  #     - app-data:/app/data
+  #   depends_on:
+  #     - node-exporter
+  #   networks:
+  #     - annogrid-net
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+  #   labels:
+  #     - "com.annogrid.component=application"
+  #     - "com.annogrid.node=anno-app-opi3bp-01"
+
+networks:
+  annogrid-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  app-data:
+    driver: local
