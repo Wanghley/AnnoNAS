@@ -8,7 +8,7 @@ x-shared-env: &shared-env
 
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n:2.20.9
+    image: docker.n8n.io/n8nio/n8n:stable
     container_name: n8n
     restart: unless-stopped
     ports:
@@ -79,7 +79,7 @@ services:
   n8n-runner:
     # NOTE: this is the runners image, NOT the main n8n image.
     # Version MUST match the n8n service above, exactly.
-    image: docker.n8n.io/n8nio/runners:2.20.9
+    image: n8nio/runners:stable
     container_name: n8n-runner
     restart: unless-stopped
     depends_on:
