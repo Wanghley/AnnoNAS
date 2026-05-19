@@ -1,9 +1,88 @@
-# Ignore all .env files
+# Environment & Secrets
 .env
-.env.*
+.env.local
+.env.*.local
+.env.production.local
 
-# Allow example env templates
+# SSH Keys
+ssh/
+~/.ssh/
+*.pem
+*.pub
+id_rsa*
+authorized_keys*
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Local Development
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Sensitive Data
+secrets/
+credentials/
+tokens/
+
+# Database Backups
+*.sql
+*.sql.gz
+dumps/
+
+# Docker Volumes (too large)
+volumes/
+
+# Temporary Files
+*.tmp
+*.bak
+
+# OS Files
+Thumbs.db
+.AppleDouble
+
+# Monitoring Data
+prometheus/data/
+grafana/data/
+
+# Test Coverage
+.coverage
+htmlcov/
+
+# Build Artifacts
+dist/
+build/
+
+# Node modules
+node_modules/
+
+# Backup Files
+*.tar.gz
+*.tar
+*.zip
+backups/
+
+# AWS/Cloud Credentials
+.aws/
+.gcloud/
+
+# But include examples
 !.env.example
+<<<<<<< HEAD
 
 # ignore data folder from Docker
 **/ha-config/
@@ -12,3 +91,6 @@
 **/voice_profiles/
 **/data/
 **/open-webui-data/
+=======
+!docker-compose.override.yml.example
+>>>>>>> 6ec8cfc16eedc5e2388231d4934338a8543edde0
