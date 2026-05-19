@@ -335,11 +335,11 @@ examples/
 These files have been created to document the new structure:
 
 - **README.md** - Professional project overview
-- **ARCHITECTURE.md** - Design decisions
-- **NODES.md** - Node inventory
-- **REPOSITORY_ORGANIZATION.md** - How to use repo
-- **ARLO_REORGANIZATION.md** - Voice assistant guide
-- **MIGRATION_GUIDE.md** - This file
+- **docs/architecture/cluster-architecture.md** - Design decisions
+- **docs/architecture/nodes-inventory.md** - Node inventory
+- **docs/guides/repository-organization.md** - How to use repo
+- **docs/guides/arlo-reorganization.md** - Voice assistant guide
+- **docs/guides/migration-guide.md** - This file
 
 ---
 
@@ -381,10 +381,10 @@ docker compose logs -f prometheus
 ## 📞 Questions?
 
 Refer to:
-- **REPOSITORY_ORGANIZATION.md** - How to use new structure
-- **NODES.md** - Node-specific details
+- **docs/guides/repository-organization.md** - How to use new structure
+- **docs/architecture/nodes-inventory.md** - Node-specific details
 - **README.md** - Project overview
-- **ARCHITECTURE.md** - Design decisions
+- **docs/architecture/cluster-architecture.md** - Design decisions
 
 ---
 

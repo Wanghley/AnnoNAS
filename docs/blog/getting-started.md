@@ -1559,7 +1559,7 @@ ping anno-app-opi3b-01
 
 ### Create Node Inventory Document
 
-**Create a file called `NODES.md` in your git repo:**
+**Create a file called `docs/architecture/nodes-inventory.md` in your git repo:**
 
 ```markdown
 # AnnoGrid Node Inventory
