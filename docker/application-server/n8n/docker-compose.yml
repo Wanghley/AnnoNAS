@@ -75,6 +75,11 @@ services:
           cpus: "2.0"
         reservations:
           memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   n8n-runner:
     # NOTE: this is the runners image, NOT the main n8n image.
@@ -99,6 +104,11 @@ services:
           cpus: "1.0"
         reservations:
           memory: 128M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   n8n_storage:
