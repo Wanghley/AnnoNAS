@@ -1,0 +1,199 @@
+model_list:
+  - model_name: granite4.1:3b
+    litellm_params:
+      model: ollama/granite4.1:3b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000357
+      output_cost_per_token: 0.0000003571
+      mode: chat
+
+  - model_name: gemma4:e2b
+    litellm_params:
+      model: ollama/gemma4:e2b
+      api_base: os.environ/OLLAMA_BASE_URL
+      max_tokens: 2048
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000143
+      output_cost_per_token: 0.0000001429
+      mode: chat
+      base_model: ollama/gemma
+
+  - model_name: gemma3:latest
+    litellm_params:
+      model: ollama/gemma3:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      max_tokens: 1024
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000455
+      output_cost_per_token: 0.0000004545
+      mode: chat
+
+  - model_name: granite4:350m
+    litellm_params:
+      model: ollama/granite4:350m
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 60
+      stream_timeout: 120
+    model_info:
+      input_cost_per_token: 0.0000000014
+      output_cost_per_token: 0.0000000143
+      mode: chat
+      tags: ["ultra-fast", "edge-optimized"]
+
+  - model_name: ministral-3:3b
+    litellm_params:
+      model: ollama/ministral-3:3b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000333
+      output_cost_per_token: 0.0000003333
+      mode: chat
+
+  - model_name: ministral-3:8b
+    litellm_params:
+      model: ollama/ministral-3:8b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      input_cost_per_token: 0.0000001000
+      output_cost_per_token: 0.0000010000
+      mode: chat
+
+  - model_name: qwen3.5:2b
+    litellm_params:
+      model: ollama/qwen3.5:2b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000132
+      output_cost_per_token: 0.0000001316
+      mode: chat
+
+  - model_name: qwen3.5:4b
+    litellm_params:
+      model: ollama/qwen3.5:4b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000417
+      output_cost_per_token: 0.0000004167
+      mode: chat
+
+  - model_name: stablelm2:latest
+    litellm_params:
+      model: ollama/stablelm2:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000091
+      output_cost_per_token: 0.0000000909
+      mode: chat
+
+  - model_name: smollm2:latest
+    litellm_params:
+      model: ollama/smollm2:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 60
+      stream_timeout: 120
+    model_info:
+      input_cost_per_token: 0.0000000100
+      output_cost_per_token: 0.0000001000
+      mode: chat
+
+  - model_name: qwen3-vl:4b
+    litellm_params:
+      model: ollama/qwen3-vl:4b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      input_cost_per_token: 0.0000000500
+      output_cost_per_token: 0.0000005000
+      mode: chat
+      base_model: ollama/qwen-vl
+
+  - model_name: qwen3:4b-instruct
+    litellm_params:
+      model: ollama/qwen3:4b-instruct
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000417
+      output_cost_per_token: 0.0000004167
+      mode: chat
+
+  - model_name: qwen3-vl:latest
+    litellm_params:
+      model: ollama/qwen3-vl:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      input_cost_per_token: 0.0000000500
+      output_cost_per_token: 0.0000005000
+      mode: chat
+
+  - model_name: llama3.2:latest
+    litellm_params:
+      model: ollama/llama3.2:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000312
+      output_cost_per_token: 0.0000003125
+      mode: chat
+
+  - model_name: lfm2.5-thinking:latest
+    litellm_params:
+      model: ollama/lfm2.5-thinking:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      input_cost_per_token: 0.0000000357
+      output_cost_per_token: 0.0000003571
+      mode: chat
+
+  - model_name: granite4:3b
+    litellm_params:
+      model: ollama/granite4:3b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      input_cost_per_token: 0.0000000357
+      output_cost_per_token: 0.0000003571
+      mode: chat
+
+litellm_settings:
+  num_retries: 3
+  request_timeout: 300
+  drop_params: true       # ignore unsupported params instead of erroring
+  set_verbose: false
+
+router_settings:
+  routing_strategy: least-busy
+  num_retries: 3
+  retry_after: 5          # seconds between retries
+  timeout: 300
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL
+  database_type: "postgres"
+  store_model_in_db: true
