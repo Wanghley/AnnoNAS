@@ -47,7 +47,7 @@ services:
 
       # ---- Performance ----
       # Heap ~75% of container limit. 1.5GB heap → 2GB mem_limit
-      NODE_OPTIONS: --max-old-space-size=1536
+      NODE_OPTIONS: --max-old-space-size=1024 --max-semi-space-size=16 --no-compact-on-every-full-gc
       NODE_ENV: production
       N8N_RELEASE_TYPE: stable
       NPM_CONFIG_UPDATE_NOTIFIER: "false"
