@@ -47,7 +47,11 @@ services:
 
       # ---- Performance ----
       # Heap ~75% of container limit. 1.5GB heap → 2GB mem_limit
+<<<<<<< HEAD
       NODE_OPTIONS: --max-old-space-size=1536
+=======
+      NODE_OPTIONS: --max-old-space-size=1024 --max-semi-space-size=16 --no-compact-on-every-full-gc
+>>>>>>> 98b71ab07035065de48d13e5b950cac1a91098ad
       NODE_ENV: production
       N8N_RELEASE_TYPE: stable
       NPM_CONFIG_UPDATE_NOTIFIER: "false"
@@ -75,11 +79,14 @@ services:
           cpus: "2.0"
         reservations:
           memory: 512M
+<<<<<<< HEAD
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+=======
+>>>>>>> 98b71ab07035065de48d13e5b950cac1a91098ad
 
   n8n-runner:
     # NOTE: this is the runners image, NOT the main n8n image.
@@ -104,11 +111,14 @@ services:
           cpus: "1.0"
         reservations:
           memory: 128M
+<<<<<<< HEAD
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+=======
+>>>>>>> 98b71ab07035065de48d13e5b950cac1a91098ad
 
 volumes:
   n8n_storage:
@@ -117,4 +127,8 @@ volumes:
 
 networks:
   databases_default:
+<<<<<<< HEAD
     external: true
+=======
+    external: true
+>>>>>>> 98b71ab07035065de48d13e5b950cac1a91098ad
