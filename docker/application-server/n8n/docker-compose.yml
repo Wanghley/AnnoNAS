@@ -48,7 +48,7 @@ services:
 
       # ---- Performance ----
       # Heap ~75% of container limit. 1.5GB heap → 2GB mem_limit
-      NODE_OPTIONS: --max-old-space-size=1536
+      NODE_OPTIONS: --max-old-space-size=1024 --max-semi-space-size=16 --no-compact-on-every-full-gc
       NODE_ENV: production
       NODE_FUNCTION_ALLOW_BUILTIN: buffer
       N8N_RELEASE_TYPE: stable
@@ -82,7 +82,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
   n8n-runner:
     # NOTE: this is the runners image, NOT the main n8n image.
     # Version MUST match the n8n service above, exactly.
@@ -106,6 +105,7 @@ services:
           cpus: "1.0"
         reservations:
           memory: 128M
+
     logging:
       driver: json-file
       options:
@@ -117,6 +117,6 @@ volumes:
     name: N8n-n8n_storage
     external: false   # set to false if you want compose to create it fresh
 
-#networks:
-#  databases_default:
-#    external: true
+networks:
+  databases_default:
+    external: true
