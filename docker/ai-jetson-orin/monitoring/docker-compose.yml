@@ -1,0 +1,74 @@
+name: annogrid-monitoring-hub
+
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-hub
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alerts.yml:/etc/prometheus/alerts.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-remote-write-receiver'
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    env_file: .env
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor-orin
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
+
+  topology-exporter:
+    build: ./topology-exporter
+    container_name: topology-exporter
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ~/.ssh:/root/.ssh:ro
+    env_file: .env
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=${DB_HOST}
+      - GF_DATABASE_NAME=${DB_NAME}
+      - GF_DATABASE_USER=${DB_USER}
+      - GF_DATABASE_PASSWORD=${DB_PASSWORD}
+      - GF_DATABASE_SSL_MODE=disable
+    env_file: .env
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus-data:

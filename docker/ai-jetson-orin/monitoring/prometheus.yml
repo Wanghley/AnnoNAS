@@ -1,0 +1,71 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: annogrid
+    hub: anno-ai-jetson-orin-01
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
+
+scrape_configs:
+
+  - job_name: 'orin'
+    static_configs:
+      - targets: ['100.85.193.50:9100']
+        labels:
+          nodename: anno-ai-jetson-orin-01
+      - targets: ['100.85.193.50:8081']
+        labels:
+          nodename: anno-ai-jetson-orin-01
+
+  - job_name: 'app-server'
+    static_configs:
+      - targets: ['100.123.183.36:9100']
+        labels:
+          nodename: anno-app-opi3b-01
+      - targets: ['100.123.183.36:8080']
+        labels:
+          nodename: anno-app-opi3b-01
+
+  - job_name: 'gateway'
+    static_configs:
+      - targets: ['100.101.178.87:9100']
+        labels:
+          nodename: anno-gw-mon-rpi3b-01
+      - targets: ['100.101.178.87:8080']
+        labels:
+          nodename: anno-gw-mon-rpi3b-01
+
+  - job_name: 'nas'
+    static_configs:
+      - targets: ['100.114.225.52:9100']
+        labels:
+          nodename: anno-nas-rpi3b-01
+      - targets: ['100.114.225.52:8080']
+        labels:
+          nodename: anno-nas-rpi3b-01
+
+  - job_name: 'topology-exporter'
+    static_configs:
+      - targets: ['100.85.193.50:9200']
+
+  - job_name: 'ntopng'
+    static_configs:
+      - targets: ['100.85.193.50:3001']
+        labels:
+          nodename: anno-ai-jetson-orin-01
+      - targets: ['100.123.183.36:3001']
+        labels:
+          nodename: anno-app-opi3b-01
+      - targets: ['100.101.178.87:3001']
+        labels:
+          nodename: anno-gw-mon-rpi3b-01
+      - targets: ['100.114.225.52:3001']
+        labels:
+          nodename: anno-nas-rpi3b-01
