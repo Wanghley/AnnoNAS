@@ -6,7 +6,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://100.101.178.87:3100/loki/api/v1/push
+  - url: http://100.85.193.50:3100/loki/api/v1/push
     external_labels:
       dataset: ${APP_NAME}
       host: ${GATEWAY_ID}
