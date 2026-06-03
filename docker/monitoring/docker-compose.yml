@@ -1,17 +1,34 @@
+name: node-monitoring
+
 services:
-  # Hardware Metrics for Prometheus
+
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     restart: always
-    network_mode: "host"
-    pid: "host"
+    ports:
+      - "9100:9100"
     volumes:
       - /:/host:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
     command:
       - '--path.rootfs=/host'
+      - '--web.listen-address=0.0.0.0:9100'
 
-  # Real-time Per-Second Telemetry
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
+
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
@@ -29,7 +46,6 @@ services:
       - /etc/os-release:/host/etc/os-release:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  # Log Shipper for Loki
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
@@ -41,7 +57,7 @@ services:
       - /var/log:/var/log:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./promtail-config.yml:/etc/promtail/config.yml
-    command: 
+    command:
       - -config.file=/etc/promtail/config.yml
       - -config.expand-env=true
       - -client.external-labels=host=${NODE_NAME}
