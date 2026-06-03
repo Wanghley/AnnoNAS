@@ -1,40 +1,110 @@
+# ============================================================
+# LiteLLM — anno-ai-jetson-orin-01 Complete Stack
+# Durham NC: $0.14/kWh × 2.4 PUE = $0.33/kWh effective
+# Cost: output = Watts / tok_s / 3_600_000 × $0.33
+#        input  = output / 10
+# Updated: May 2026
+# ============================================================
+
 model_list:
-  - model_name: granite4.1:3b
+
+  # ── EMBEDDINGS ─────────────────────────────────────────────
+
+  # nomic-embed-text | 4W | ~2000 embed/s | best ecosystem compat
+  - model_name: nomic-embed-text
     litellm_params:
-      model: ollama/granite4.1:3b
+      model: ollama/nomic-embed-text
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 30
+      stream_timeout: 60
+    model_info:
+      mode: embedding
+      max_tokens: 8192
+      input_cost_per_token: 0.0000000001
+      output_cost_per_token: 0.0000000010
+
+  # granite-embedding:278m | 4W | ~1500 embed/s | enterprise/structured RAG
+  - model_name: granite-embedding:278m
+    litellm_params:
+      model: ollama/granite-embedding:278m
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 30
+      stream_timeout: 60
+    model_info:
+      mode: embedding
+      max_tokens: 512
+      input_cost_per_token: 0.0000000001
+      output_cost_per_token: 0.0000000010
+
+  # granite-embedding:30m | 3W | ~3000 rerank/s | reranker for RAG pipelines
+  - model_name: granite-embedding:30m
+    litellm_params:
+      model: ollama/granite-embedding:30m
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 15
+      stream_timeout: 30
+    model_info:
+      mode: embedding
+      max_tokens: 512
+      input_cost_per_token: 0.0000000001
+      output_cost_per_token: 0.0000000001
+
+  # ── SAFETY GUARDRAIL ───────────────────────────────────────
+  # granite3-guardian:2b | 8W | single Yes/No token | $0.0001/1M
+  # Use BEFORE routing to other models in n8n pipelines
+  # System prompt options: harm, jailbreak, violence, profanity,
+  #   sexual_content, unethical_behavior, social_bias
+  - model_name: guardian
+    litellm_params:
+      model: ollama/granite3-guardian:2b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 15
+      stream_timeout: 30
+    model_info:
+      mode: chat
+      max_tokens: 1            # outputs Yes or No — hard cap
+      input_cost_per_token: 0.0000000018
+      output_cost_per_token: 0.0000000001
+      tags: ["safety", "guardrail", "moderation"]
+
+  # ── VISION SPECIALIST ──────────────────────────────────────
+  # moondream | 6W | ~35 tok/s | $0.006/1M output
+  # Fastest pure vision — OCR, captions, object detection
+  # Use when speed matters more than chat quality
+  - model_name: moondream
+    litellm_params:
+      model: ollama/moondream:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 60
+      stream_timeout: 120
+    model_info:
+      mode: chat
+      max_tokens: 512
+      supports_vision: true
+      input_cost_per_token: 0.0000000018
+      output_cost_per_token: 0.0000000183
+      tags: ["vision", "ocr", "fast-image"]
+
+  # ── HTML PARSER ────────────────────────────────────────────
+  # reader-lm:1.5b | 8W | ~28 tok/s | $0.026/1M output
+  # Dedicated HTML → Markdown/JSON converter
+  # Input: raw HTML. No system prompt needed.
+  - model_name: reader
+    litellm_params:
+      model: ollama/reader-lm:1.5b
       api_base: os.environ/OLLAMA_BASE_URL
       timeout: 120
       stream_timeout: 300
     model_info:
-      input_cost_per_token: 0.0000000357
-      output_cost_per_token: 0.0000003571
       mode: chat
+      max_tokens: 8192         # handles large HTML pages
+      input_cost_per_token: 0.0000000026
+      output_cost_per_token: 0.0000000260
+      tags: ["html", "markdown", "web-scraping", "extraction"]
 
-  - model_name: gemma4:e2b
-    litellm_params:
-      model: ollama/gemma4:e2b
-      api_base: os.environ/OLLAMA_BASE_URL
-      max_tokens: 2048
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000143
-      output_cost_per_token: 0.0000001429
-      mode: chat
-      base_model: ollama/gemma
+  # ── TIER 1: ULTRA-FAST ─────────────────────────────────────
 
-  - model_name: gemma3:latest
-    litellm_params:
-      model: ollama/gemma3:latest
-      api_base: os.environ/OLLAMA_BASE_URL
-      max_tokens: 1024
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000455
-      output_cost_per_token: 0.0000004545
-      mode: chat
-
+  # granite4:350m | 7W | ~45 tok/s | $0.014/1M output
   - model_name: granite4:350m
     litellm_params:
       model: ollama/granite4:350m
@@ -42,122 +112,15 @@ model_list:
       timeout: 60
       stream_timeout: 120
     model_info:
+      mode: chat
+      max_tokens: 4096
       input_cost_per_token: 0.0000000014
       output_cost_per_token: 0.0000000143
-      mode: chat
       tags: ["ultra-fast", "edge-optimized"]
 
-  - model_name: ministral-3:3b
-    litellm_params:
-      model: ollama/ministral-3:3b
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000333
-      output_cost_per_token: 0.0000003333
-      mode: chat
+  # ── TIER 2: MICRO-REASONING ────────────────────────────────
 
-  - model_name: ministral-3:8b
-    litellm_params:
-      model: ollama/ministral-3:8b
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 180
-      stream_timeout: 400
-    model_info:
-      input_cost_per_token: 0.0000001000
-      output_cost_per_token: 0.0000010000
-      mode: chat
-
-  - model_name: qwen3.5:2b
-    litellm_params:
-      model: ollama/qwen3.5:2b
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000132
-      output_cost_per_token: 0.0000001316
-      mode: chat
-
-  - model_name: qwen3.5:4b
-    litellm_params:
-      model: ollama/qwen3.5:4b
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000417
-      output_cost_per_token: 0.0000004167
-      mode: chat
-
-  - model_name: stablelm2:latest
-    litellm_params:
-      model: ollama/stablelm2:latest
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000091
-      output_cost_per_token: 0.0000000909
-      mode: chat
-
-  - model_name: smollm2:latest
-    litellm_params:
-      model: ollama/smollm2:latest
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 60
-      stream_timeout: 120
-    model_info:
-      input_cost_per_token: 0.0000000100
-      output_cost_per_token: 0.0000001000
-      mode: chat
-
-  - model_name: qwen3-vl:4b
-    litellm_params:
-      model: ollama/qwen3-vl:4b
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 180
-      stream_timeout: 400
-    model_info:
-      input_cost_per_token: 0.0000000500
-      output_cost_per_token: 0.0000005000
-      mode: chat
-      base_model: ollama/qwen-vl
-
-  - model_name: qwen3:4b-instruct
-    litellm_params:
-      model: ollama/qwen3:4b-instruct
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000417
-      output_cost_per_token: 0.0000004167
-      mode: chat
-
-  - model_name: qwen3-vl:latest
-    litellm_params:
-      model: ollama/qwen3-vl:latest
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 180
-      stream_timeout: 400
-    model_info:
-      input_cost_per_token: 0.0000000500
-      output_cost_per_token: 0.0000005000
-      mode: chat
-
-  - model_name: llama3.2:latest
-    litellm_params:
-      model: ollama/llama3.2:latest
-      api_base: os.environ/OLLAMA_BASE_URL
-      timeout: 120
-      stream_timeout: 300
-    model_info:
-      input_cost_per_token: 0.0000000312
-      output_cost_per_token: 0.0000003125
-      mode: chat
-
+  # lfm2.5-thinking | 8W | ~40 tok/s | $0.018/1M output
   - model_name: lfm2.5-thinking:latest
     litellm_params:
       model: ollama/lfm2.5-thinking:latest
@@ -165,35 +128,179 @@ model_list:
       timeout: 180
       stream_timeout: 400
     model_info:
-      input_cost_per_token: 0.0000000357
-      output_cost_per_token: 0.0000003571
       mode: chat
+      max_tokens: 4096
+      input_cost_per_token: 0.0000000018
+      output_cost_per_token: 0.0000000183
 
-  - model_name: granite4:3b
+  # deepseek-r1:1.5b | 10W | ~30 tok/s | $0.031/1M output
+  - model_name: deepseek-r1:1.5b
     litellm_params:
-      model: ollama/granite4:3b
+      model: ollama/deepseek-r1:1.5b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      mode: chat
+      max_tokens: 32768
+      input_cost_per_token: 0.0000000031
+      output_cost_per_token: 0.0000000306
+
+  # ── TIER 3: SPECIALIZED ────────────────────────────────────
+
+  # qwen2.5-coder:3b | 11W | ~22 tok/s | $0.046/1M output
+  - model_name: qwen2.5-coder:3b
+    litellm_params:
+      model: ollama/qwen2.5-coder:3b
       api_base: os.environ/OLLAMA_BASE_URL
       timeout: 120
       stream_timeout: 300
     model_info:
+      mode: chat
+      max_tokens: 32768
+      input_cost_per_token: 0.0000000046
+      output_cost_per_token: 0.0000000458
+      tags: ["code", "fim"]
+
+  # granite4.1:3b | 11W | ~20 tok/s | $0.357/1M output
+  - model_name: granite4.1:3b
+    litellm_params:
+      model: ollama/granite4.1:3b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      mode: chat
+      max_tokens: 128000
       input_cost_per_token: 0.0000000357
       output_cost_per_token: 0.0000003571
-      mode: chat
+      tags: ["structured", "json", "enterprise", "tool-calling"]
 
+  # phi4-mini | 12W | ~18 tok/s | $0.061/1M output
+  - model_name: phi4-mini
+    litellm_params:
+      model: ollama/phi4-mini
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      mode: chat
+      max_tokens: 16000
+      input_cost_per_token: 0.0000000061
+      output_cost_per_token: 0.0000000611
+      tags: ["math", "reasoning", "logic"]
+
+  # ── TIER 4: MULTIMODAL WORKHORSES ──────────────────────────
+
+  # qwen3.5:2b | 10W | ~25 tok/s | $0.132/1M output
+  - model_name: qwen3.5:2b
+    litellm_params:
+      model: ollama/qwen3.5:2b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      mode: chat
+      max_tokens: 32768
+      supports_vision: true
+      supports_function_calling: true
+      input_cost_per_token: 0.0000000132
+      output_cost_per_token: 0.0000001316
+
+  # llama3.2:latest | 10W | ~22 tok/s | $0.313/1M output
+  - model_name: llama3.2:latest
+    litellm_params:
+      model: ollama/llama3.2:latest
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+    model_info:
+      mode: chat
+      max_tokens: 131072
+      input_cost_per_token: 0.0000000312
+      output_cost_per_token: 0.0000003125
+
+  # qwen3.5:4b | 14W | ~15 tok/s | $0.417/1M output
+  - model_name: qwen3.5:4b
+    litellm_params:
+      model: ollama/qwen3.5:4b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 120
+      stream_timeout: 300
+      extra_body:
+        think: false
+    model_info:
+      mode: chat
+      max_tokens: 32768
+      supports_vision: true
+      supports_function_calling: true
+      input_cost_per_token: 0.0000000417
+      output_cost_per_token: 0.0000004167
+
+  # ── TIER 5: FLAGSHIP ───────────────────────────────────────
+
+  # gemma4:e2b | 13W | ~17 tok/s | $0.143/1M output
+  - model_name: gemma4:e2b
+    litellm_params:
+      model: ollama/gemma4:e2b
+      api_base: os.environ/OLLAMA_BASE_URL
+      timeout: 180
+      stream_timeout: 400
+    model_info:
+      mode: chat
+      max_tokens: 128000
+      supports_vision: true
+      supports_function_calling: true
+      input_cost_per_token: 0.0000000143
+      output_cost_per_token: 0.0000001429
+      base_model: ollama/gemma
+
+
+# ============================================================
+# LITELLM SETTINGS
+# ============================================================
 litellm_settings:
   num_retries: 3
   request_timeout: 300
-  drop_params: true       # ignore unsupported params instead of erroring
+  drop_params: true
   set_verbose: false
+  json_logs: true
 
+  fallbacks:
+    - qwen3.5:4b:
+        - qwen3.5:2b
+        - llama3.2:latest
+    - gemma4:e2b:
+        - qwen3.5:4b
+        - qwen3.5:2b
+    - deepseek-r1:1.5b:
+        - lfm2.5-thinking:latest
+    - moondream:
+        - qwen3.5:2b
+
+  context_window_fallbacks:
+    - qwen3.5:4b:
+        - qwen3.5:2b
+
+
+# ============================================================
+# ROUTER
+# ============================================================
 router_settings:
   routing_strategy: least-busy
   num_retries: 3
-  retry_after: 5          # seconds between retries
+  retry_after: 5
   timeout: 300
+  enable_pre_call_checks: true
 
+
+# ============================================================
+# GENERAL
+# ============================================================
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY
   database_url: os.environ/DATABASE_URL
   database_type: "postgres"
   store_model_in_db: true
+  background_health_checks: true
+  health_check_interval: 60

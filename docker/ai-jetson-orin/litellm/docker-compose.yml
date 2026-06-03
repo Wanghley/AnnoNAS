@@ -8,11 +8,12 @@ services:
     env_file: .env
     environment:
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - LITELLM_LOG=WARNING
     volumes:
       - ./config.yaml:/app/config.yaml
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    command: ["--config", "/app/config.yaml", "--detailed_debug"]
+    command: ["--config", "/app/config.yaml"]
     healthcheck:
       test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')\" 2>/dev/null || exit 1"]
       interval: 30s
