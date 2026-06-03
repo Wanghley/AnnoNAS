@@ -1,0 +1,44 @@
+services:
+  wyoming-voice-match:
+    # Uses the local image you built (CC 8.7 optimized)
+    image: jarvis-gate:orin
+    container_name: wyoming-voice-match
+    restart: unless-stopped
+    
+    # Required for Jetson hardware acceleration
+    runtime: nvidia
+    
+    # Using host network for lowest possible latency in AnnoGrid
+    network_mode: "host"
+
+    volumes:
+      # Absolute path to your existing biometric data folder
+      - /home/wanghley/Workspace/AnnoGrid/arlo/voice-matching/data:/data
+
+    environment:
+      # Connection to your Whisper instance (ensure port matches)
+      - UPSTREAM_URI=tcp://localhost:10300
+      - LISTEN_URI=tcp://0.0.0.0:10350
+
+      # Biometric Gate Settings
+      # 0.18-0.20 is recommended if your current voice match is hitting 0.20
+      - VERIFY_THRESHOLD=0.18
+      - EXTRACTION_THRESHOLD=0.05
+      - MIN_ENERGY=20
+
+      # Identity Tagging Protocol
+      - TAG_SPEAKER=true           # Prepends the bracketed name
+      - ALWAYS_TAG=true            # CRITICAL: Forces [Unknown] if no match found
+      - UNKNOWN_NAME=Unknown       # The specific label for strangers
+      - REQUIRE_SPEAKER_MATCH=false # FORCES transcription even for strangers
+      
+      # Jetson Performance Tuning
+      - DEVICE=cuda                # Force use of Orin Tensor cores
+      - HF_HOME=/data/hf_cache
+      - LOG_LEVEL=DEBUG
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]

@@ -1,0 +1,70 @@
+name: twenty
+
+networks:
+  databases_default:
+    external: true
+
+services:
+  server:
+    image: twentycrm/twenty:${TAG:-latest}
+    volumes:
+      - server-local-data:/app/packages/twenty-server/.local-storage
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_PORT: 3000
+      PG_DATABASE_URL: postgres://${PG_DATABASE_USER}:${PG_DATABASE_PASSWORD}@${PG_DATABASE_HOST}:${PG_DATABASE_PORT}/${PG_DATABASE_NAME}
+      SERVER_URL: ${SERVER_URL}
+      REDIS_URL: ${REDIS_URL}
+      DISABLE_DB_MIGRATIONS: "false"
+      DISABLE_CRON_JOBS_REGISTRATION: "false"
+
+      STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      APP_SECRET: ${APP_SECRET:-}
+      
+      # V8 Engine Optimization for ARM64 (Crucial for Orange Pi)
+      NODE_OPTIONS: "--max-old-space-size=1536 --max-semi-space-size=64"
+    networks:
+      - databases_default
+    healthcheck:
+      test: curl --fail http://localhost:3000/healthz || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 300s # Gives the Orange Pi a full 5 minutes to run migrations
+    restart: always
+
+  worker:
+    image: twentycrm/twenty:${TAG:-latest}
+    volumes:
+      - server-local-data:/app/packages/twenty-server/.local-storage
+    command: ["yarn", "worker:prod"]
+    environment:
+      PG_DATABASE_URL: postgres://${PG_DATABASE_USER}:${PG_DATABASE_PASSWORD}@${PG_DATABASE_HOST}:${PG_DATABASE_PORT}/${PG_DATABASE_NAME}
+      SERVER_URL: ${SERVER_URL}
+      REDIS_URL: ${REDIS_URL}
+      
+      # The worker waits for the server to run migrations
+      DISABLE_DB_MIGRATIONS: "true" 
+      DISABLE_CRON_JOBS_REGISTRATION: "true" 
+
+      STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      APP_SECRET: ${APP_SECRET:-}
+      
+      # Strict memory limit for background tasks
+      NODE_OPTIONS: "--max-old-space-size=1536"
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+    networks:
+      - databases_default
+    depends_on:
+      server:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  server-local-data:

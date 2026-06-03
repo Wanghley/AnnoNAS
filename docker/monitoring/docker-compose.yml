@@ -1,0 +1,51 @@
+services:
+  # Hardware Metrics for Prometheus
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    network_mode: "host"
+    pid: "host"
+    volumes:
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+
+  # Real-time Per-Second Telemetry
+  netdata:
+    image: netdata/netdata:latest
+    container_name: netdata
+    restart: always
+    network_mode: "host"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  # Log Shipper for Loki
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: always
+    environment:
+      - GATEWAY_IP=${GATEWAY_IP}
+      - NODE_NAME=${NODE_NAME}
+    volumes:
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: 
+      - -config.file=/etc/promtail/config.yml
+      - -config.expand-env=true
+      - -client.external-labels=host=${NODE_NAME}
+
+volumes:
+  netdatalib:
+  netdatacache:

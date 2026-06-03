@@ -1,0 +1,99 @@
+version: '3.8'
+
+# Storage Node (anno-nas-rpi3bp-01)
+# Raspberry Pi 3B+ with 2× 2TB USB drives
+# Purpose: Centralized file storage, backups, NAS services
+
+services:
+  # Node Exporter - Prometheus metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - annogrid-net
+    labels:
+      - "com.annogrid.component=monitoring"
+      - "com.annogrid.node=anno-nas-rpi3bp-01"
+
+  # Samba - Windows/Mac file sharing
+  samba:
+    image: dperson/samba:latest
+    container_name: samba
+    restart: always
+    ports:
+      - "445:445"
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139"
+    volumes:
+      - /mnt/storage1/media:/media
+      - /mnt/storage1/backups:/backups
+      - /mnt/storage2/documents:/documents
+    environment:
+      - RECYCLE=1
+      - TZ=UTC
+    command: '-s "media;/media;yes;no;yes" -s "backups;/backups;yes;no;yes" -s "documents;/documents;yes;no;yes" -u "pi;password"'
+    networks:
+      - annogrid-net
+    labels:
+      - "com.annogrid.component=storage"
+      - "com.annogrid.node=anno-nas-rpi3bp-01"
+
+  # NFS Server - Linux file sharing
+  nfs-server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    container_name: nfs-server
+    restart: always
+    privileged: true
+    ports:
+      - "111:111/udp"
+      - "111:111/tcp"
+      - "2049:2049/udp"
+      - "2049:2049/tcp"
+    volumes:
+      - /mnt/storage1/media:/nfs/media
+      - /mnt/storage1/backups:/nfs/backups
+      - /mnt/storage2/documents:/nfs/documents
+    environment:
+      - SHARED_DIRECTORY=/nfs
+    networks:
+      - annogrid-net
+    labels:
+      - "com.annogrid.component=storage"
+      - "com.annogrid.node=anno-nas-rpi3bp-01"
+
+  # Optional: Rsync for automated backups
+  # rsync:
+  #   image: cwilde/rsync-server:latest
+  #   container_name: rsync
+  #   restart: always
+  #   ports:
+  #     - "873:873"
+  #   volumes:
+  #     - /mnt/storage1/backups:/backups
+  #   environment:
+  #     - ALLOW=192.168.1.10
+  #   networks:
+  #     - annogrid-net
+
+networks:
+  annogrid-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  storage-data:
+    driver: local

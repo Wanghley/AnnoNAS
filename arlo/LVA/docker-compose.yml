@@ -1,0 +1,57 @@
+services:
+  # Fix permissions service (Keep as is)
+  fix-permissions:
+    platform: "linux/arm64"
+    image: "ghcr.io/ohf-voice/linux-voice-assistant:latest"
+    user: "0:0"
+    entrypoint: []
+    command: "chown -R 1000:1000 /app/local /app/configuration /app/wakewords/custom /app/sounds/custom"
+    volumes:
+      - wakeword_data:/app/local
+      - wakeword_custom:/app/wakewords/custom
+      - configuration:/app/configuration
+      - sounds_custom:/app/sounds/custom
+    restart: "no"
+
+  # Linux Voice Assistant
+  linux-voice-assistant:
+    container_name: linux-voice-assistant
+    platform: "linux/arm64"
+    image: "ghcr.io/ohf-voice/linux-voice-assistant:latest"
+    init: true
+    restart: unless-stopped
+    network_mode: "host"
+    user: "1000:1000"
+    group_add:
+      - "29"  # audio group GID
+    security_opt:
+      - no-new-privileges:true
+    env_file: .env
+    environment:
+      - LVA_SOUNDCARD_BACKEND=pulse
+      # Leave AUDIO_INPUT/OUTPUT_DEVICE unset here; set in .env to match pactl list sources/sinks short
+      # Connect to the host PulseAudio daemon (container has no internal daemon)
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - PULSE_COOKIE=/run/user/1000/pulse/cookie
+    cap_add:
+      - SYS_NICE
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - wakeword_data:/app/local
+      - wakeword_custom:/app/wakewords/custom
+      - configuration:/app/configuration
+      - sounds_custom:/app/sounds/custom
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # Host PulseAudio socket — prereq: systemctl --user enable --now pulseaudio
+      - /run/user/1000/pulse:/run/user/1000/pulse
+    depends_on:
+      fix-permissions:
+        condition: service_completed_successfully
+
+volumes:
+  wakeword_data:
+  wakeword_custom:
+  configuration:
+  sounds_custom:

@@ -1,236 +1,295 @@
-<!-- PROJECT SHIELDS -->
-<a name="readme-top"></a>
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/wanghley)
+# AnnoGrid: Professional Multi-Node Home & Edge Infrastructure
 
-<!-- PROJECT LOGO -->
-<br />
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Cluster Status](https://img.shields.io/badge/Cluster-4--Node%20Active-brightgreen)]()
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Docker](https://img.shields.io/badge/Docker-20.10+-blue.svg)](https://www.docker.com/)
+
 <div align="center">
-  <a href="https://github.com/wanghley/anno-grid">
-    <img src="assets/logo_1024_transparent.png" alt="AnnoGrid Logo" height="150">
-  </a>
-
-  <h3 align="center">AnnoGrid: Affordable Multi-Node Home & Edge Infrastructure</h3>
-
-  <p align="center">
-    AnnoGrid is a modular, low-cost, multi-node homelab platform that allows anyone to run a powerful home server, storage, and network monitoring infrastructure using small single-board computers.
-    <br />
-    <a href="https://github.com/wanghley/anno-grid"><strong>Explore the project »</strong></a>
-    <br />
-  </p>
+  <img src="assets/branding/logo_1024_transparent.png" alt="AnnoGrid Logo" width="200">
+  
+  **A production-grade home infrastructure platform built on affordable single-board computers**
 </div>
 
 ---
 
-## About The Project
+## 📋 Project Overview
 
-AnnoGrid is designed to **democratize homelabs**. Traditional home servers can be expensive, bulky, and power-hungry. AnnoGrid uses **affordable small single-board computers** like Raspberry Pi and Orange Pi to create a **scalable, modular, and efficient cluster**.  
+AnnoGrid is a **professionally organized, scalable infrastructure platform** designed for:
+- **Students & Educators** learning cloud infrastructure
+- **Hobbyists & Makers** building home automation
+- **Developers** needing a testing/staging environment
+- **Organizations** deploying edge computing workloads
 
-Its goals are to provide:
-
-- **Low-Cost Infrastructure**: Build a home server, NAS, and monitoring stack for the price of a few boards.  
-- **Power Efficiency**: Single-board computers consume a fraction of the power of traditional servers.  
-- **Scalability**: Start with a few nodes and expand as your needs grow.  
-- **Flexibility**: Each node can have a dedicated role—application server, storage, gateway, or monitoring.  
-- **Security & Connectivity**: Integrates mesh VPN and Cloudflare Tunnels for safe external access.  
-- **Observability**: Built-in monitoring and metrics collection for all nodes and services.  
-
-AnnoGrid is perfect for **tech enthusiasts, home lab builders, students, and developers** who want a hands-on, affordable, and practical environment to learn, experiment, and run small-scale applications.
+Built with 4 dedicated nodes, each optimized for specific workloads, AnnoGrid demonstrates **enterprise-grade patterns at hobby scale**.
 
 ---
 
-## General Architecture
+## 🏗️ Cluster Architecture
 
-AnnoNAS is structured around **three main types of nodes**:
+### Hardware Composition
 
-1. **Application Nodes** – run core services and Docker containers.  
-2. **Storage Nodes (NAS)** – manage persistent data and backups.  
-3. **Gateway / Monitoring Nodes** – manage network access, VPN, and collect metrics.  
+| Node | Hardware | Role | CPU | RAM | Storage | Status |
+|------|----------|------|-----|-----|---------|--------|
+| **anno-app-opi3bp-01** | Orange Pi 3B+ | Application Server | 4× ARM A53 | 2GB | 64GB microSD | 🟢 Active |
+| **anno-ai-jetson-orin-nano-01** | Jetson Orin Nano | AI/ML Workloads | 6× ARM A78 | 8GB | 128GB | 🟢 Active |
+| **anno-nas-rpi3bp-01** | Raspberry Pi 3B+ | Storage (NAS) | 4× ARM A53 | 1GB | 2×2TB USB | 🟢 Active |
+| **anno-gw-mon-rpi3bp-01** | Raspberry Pi 3B+ | Gateway + Monitoring | 4× ARM A53 | 1GB | 32GB microSD | 🟢 Active |
 
-Optional future nodes include backup nodes, database nodes, and edge AI accelerators.  
+### Network Infrastructure
 
 ```
+┌─────────────────────────────────┐
+│   TP-Link AX1500 WiFi Router    │
+│      (Gateway: 192.168.1.1)     │
+└──────────────┬──────────────────┘
+               │ Ethernet (1 Gbps)
+        ┌──────▼──────┐
+        │  TP-Link    │
+        │ TL-SG608    │
+        │ 8-Port      │
+        │ Managed     │
+        │ Switch      │
+        └──┬──┬──┬────┘
+           │  │  │
+    ┌──────┘  │  └────────┐
+    │         │           │
+ ┌──▼──┐  ┌──▼──┐  ┌──────▼──┐  ┌─────────┐
+ │App  │  │ AI  │  │  NAS   │  │Gateway/ │
+ │Node │  │Node │  │  Node  │  │Monitoring
+ └─────┘  └─────┘  └────────┘  └─────────┘
+
+192.168.1.10  192.168.1.11  192.168.1.12  192.168.1.13
+
         ┌─────────────────────┐
-        │    Tailscale VPN    │
-        │   & Cloudflare      │
-        │      Gateway        │
-        └─────────┬───────────┘
-                  │
-    ┌─────────────┼─────────────┐
-    │             │             │
-┌───▼───┐    ┌────▼────┐   ┌────▼────┐
-│ App   │    │ Storage │   │Gateway/ │
-│ Node  │    │  (NAS)  │   │Monitor  │
-│       │    │  Node   │   │  Node   │
-└───────┘    └─────────┘   └─────────┘
+        │  Tailscale VPN      │
+        │  (Encrypted Mesh)   │
+        │  100.x.x.x/24       │
+        └──────────┬──────────┘
+                   │
+        ┌──────────▼──────────┐
+        │ Cloudflare Tunnel   │
+        │ (Safe External      │
+        │  Access)            │
+        └─────────────────────┘
 ```
+
+### Service Architecture
+
+**Per-Node Services:**
+- **App Node**: Web servers, APIs, application containers
+- **AI Node**: CUDA/ML workloads, inference engines, TensorFlow
+- **NAS Node**: Storage, backups, media server
+- **Gateway/Monitor**: Prometheus, Grafana, Tailscale, Cloudflare Tunnel
+
+**Shared Services:**
+- Node Exporter (metrics on all nodes)
+- Centralized logging (Vector)
+- Tailscale VPN (encrypted mesh network)
+- Cloudflare Tunnel (safe external access)
 
 ---
 
-## Naming Convention
+## 🚀 Quick Start
 
-Each node is named systematically for **clarity and scalability**:
+### Prerequisites
+- Basic Linux knowledge
+- SSH client
+- Network connectivity (Ethernet recommended)
+- Tailscale account (free)
+- Cloudflare account (free)
 
-```
-[grid]-[role]-[device]-[id]
+### 1-Minute Setup Checklist
+```bash
+# 1. SSH into gateway node
+ssh pi@anno-gw-mon-rpi3bp-01.local
+
+# 2. Verify cluster is up
+./scripts/cluster/health-check-all.sh
+
+# 3. Access monitoring
+# Local: http://anno-gw-mon-rpi3bp-01.local:3000 (Grafana)
+# External: https://grafana.yourdomain.com (via Cloudflare)
 ```
 
-| Component | Description | Example |
-|-----------|-------------|---------|
-| grid      | Cluster prefix | `anno` |
-| role      | Node function | `app`, `nas`, `gw`, `mon`, `bkp` |
-| device    | Hardware model | `opi3b`, `opi3bp`, `rpi3b+` |
-| id        | Unique index | `01`, `02` |
-
-Example:
-```
-anno-app-opi3b-01
-```
+For detailed setup, see [GETTING_STARTED.md](docs/GETTING_STARTED.md)
 
 ---
 
-## Hardware and Roles
+## 📚 Documentation
 
-| Hostname | Hardware | OS | Roles | Description |
-|----------|---------|----|-------|-------------|
-| anno-app-opi3b-01 | Orange Pi 3B | Armbian | app | Runs Cosmos Cloud, Docker apps: MonicaHQ, N8n, Jellyfin |
-| anno-nas-opi3bp-01 | Orange Pi 3B+ | Raspbian + OMV | nas | Storage node with two HDDs, file server |
-| anno-gw-mon-rpi3bp-01 | Raspberry Pi 3B+ | Raspbian | gw, mon | Gateway + monitoring stack, Cloudflare, Tailscale, Prometheus, Grafana, Uptime Kuma |
-
----
-
-## Networking
-
-- **Tailscale Mesh VPN**: Provides secure encrypted connections between all nodes.  
-- **Cloudflare Tunnel (Cloudflared)**: Enables secure access to services without exposing ports to the public internet.  
-- **Gateway Node**: Central point for network routing and monitoring.  
+| Document | Purpose |
+|----------|---------|
+| **[docs/architecture/cluster-architecture.md](docs/architecture/cluster-architecture.md)** | Cluster design and technical decisions |
+| **[docs/architecture/nodes-inventory.md](docs/architecture/nodes-inventory.md)** | Node specifications and inventory |
+| **[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** | Installation and initial setup |
+| **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** | Service deployment procedures |
+| **[docs/NETWORK.md](docs/NETWORK.md)** | Network configuration details |
+| **[docs/SECURITY.md](docs/SECURITY.md)** | Security best practices |
+| **[docs/MAINTENANCE.md](docs/MAINTENANCE.md)** | Operations and maintenance |
+| **[docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** | Common issues and solutions |
 
 ---
 
-## Monitoring Stack
-
-Monitoring runs on the **gateway node**:
-
-### Components
-
-- **Prometheus** → metrics collection from Node Exporters.  
-- **Grafana** → dashboards and visualizations.  
-- **Node Exporter** → lightweight agent on each node to expose system metrics.  
-- **Uptime Kuma** → monitor availability of services.  
-
-### Node Exporter Deployment
-
-Run on each node:
+## 🔧 Common Commands
 
 ```bash
-#!/bin/bash
-NODE_NAME=${1:-$(hostname)}
-mkdir -p /var/lib/node_exporter/textfile_collector
+# Cluster Health
+./scripts/cluster/health-check-all.sh
 
-docker run -d \
-  --name=node-exporter-$NODE_NAME \
-  --restart=always \
-  --net="host" \
-  --pid="host" \
-  -v "/:/host:ro,rslave" \
-  -v "/etc/localtime:/etc/localtime:ro" \
-  -v "/var/lib/node_exporter/textfile_collector:/host/var/lib/node_exporter/textfile_collector" \
-  --cap-add=SYS_TIME \
-  -l "com.annogrid.service=monitoring" \
-  -l "com.annogrid.component=node-exporter" \
-  -l "com.annogrid.node=$NODE_NAME" \
-  prom/node-exporter \
-  --path.rootfs=/host \
-  --collector.textfile.directory=/host/var/lib/node_exporter/textfile_collector \
-  --collector.filesystem.mount-points-exclude="^/(dev|proc|sys|var/lib/docker/.+|var/lib/containerd/.+)($|/)" \
-  --web.listen-address=:9100 \
-  --web.telemetry-path=/metrics \
-  --no-collector.wifi \
-  --collector.netclass.ignored-devices="^(lo|docker[0-9]+|br-.+|veth.+)$" \
-  --collector.netdev.device-exclude="^(lo|docker[0-9]+|br-.+|veth.+)$" \
-  --no-collector.hwmon
+# Update all nodes
+./scripts/cluster/update-all.sh
+
+# Network diagnostics
+./scripts/cluster/network-test.sh
+
+# Deploy a service
+./scripts/deployment/deploy-node.sh anno-app-opi3bp-01
+
+# Backup all configurations
+./scripts/cluster/backup-all.sh
+
+# Check logs across cluster
+docker compose logs -f  # on each node
 ```
 
-### Prometheus Configuration
-
-```yaml
-global:
-  scrape_interval: 15s
-
-scrape_configs:
-  - job_name: "anno-nodes"
-    static_configs:
-      - targets:
-          - "100.x.x.x:9100"  # anno-app-opi3b-01 (Tailscale IP)
-          - "100.x.x.x:9100"  # anno-nas-opi3bp-01
-          - "100.x.x.x:9100"  # anno-gw-mon-rpi3bp-01
-```
+More commands in [Makefile](Makefile)
 
 ---
 
-## Built With
+## 📊 Monitoring & Observability
 
-* Docker / Docker Compose
-* Prometheus
-* Grafana
-* Node Exporter
-* Uptime Kuma
-* Tailscale (mesh VPN)
-* Cloudflared (Cloudflare Tunnel)
-* Armbian / Raspbian
+### Dashboards Available
+- **Cluster Overview**: Total resources, all nodes status
+- **Node Details**: Per-node CPU, memory, disk, network
+- **Network Health**: Bandwidth, packet loss, latency
+- **Application Performance**: Request rates, response times
+- **AI Workload Metrics**: GPU utilization, model inference time
 
----
-
-## Getting Started
-
-Getting started with AnnoGrid is simple:
-
-1. Acquire one or more small single-board computers (e.g., Orange Pi, Raspberry Pi).  
-2. Assign roles to each node (App, NAS, Gateway, Monitoring).  
-3. Set up network connectivity via Tailscale and Cloudflare.  
-4. Deploy services according to your needs: storage, apps, or monitoring.  
-5. Expand your grid as your requirements grow.
-
-AnnoGrid supports **Docker-based deployment**, but can be adapted to other lightweight virtualization or container orchestration platforms.
+### Access Points
+- **Local Network**: `http://anno-gw-mon-rpi3bp-01.local:3000`
+- **Tailscale VPN**: `http://100.x.x.x:3000` (secure tunnel)
+- **External**: `https://grafana.yourdomain.com` (Cloudflare Tunnel)
 
 ---
 
-## Roadmap
+## 🔐 Security Features
 
-- Add dedicated backup and database nodes.  
-- Integrate edge AI and TinyML workloads.  
-- Automate node discovery and metrics collection.  
-- Create pre-configured images for fast deployment.  
-- Expand community examples and tutorials.
+✅ **Tailscale VPN** - Encrypted mesh network between all nodes  
+✅ **Cloudflare Tunnel** - Safe external access without port forwarding  
+✅ **SSH Key Authentication** - Passwordless, secure access  
+✅ **Firewall Rules** - nftables configuration per node  
+✅ **Network Segmentation** - Optional VLANs for isolation  
+✅ **Encrypted Backups** - All backups encrypted at rest  
 
----
-
-## License
-
-This project is licensed under the MIT License.
+See [docs/SECURITY.md](docs/SECURITY.md) for detailed security setup.
 
 ---
 
-## Contact
+## 🎯 Use Cases
 
-Wanghley – [LinkedIn](https://linkedin.com/in/wanghley)  
+### Production-Ready
+- **Media Server** (Jellyfin, Plex)
+- **Home Automation Hub** (Home Assistant)
+- **Personal Cloud** (Nextcloud, Syncthing)
+- **Development Staging** (test deployments)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### AI/ML Specific (Jetson Node)
+- **Model Inference** (TensorFlow, PyTorch)
+- **Computer Vision** (object detection, pose estimation)
+- **Edge Analytics** (real-time data processing)
+- **GPU Acceleration** (CUDA workloads)
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/wanghley/anno-grid?style=for-the-badge
-[contributors-url]: https://github.com/wanghley/anno-grid/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/wanghley/anno-grid.svg?style=for-the-badge
-[forks-url]: https://github.com/wanghley/anno-grid/network/members
-[stars-shield]: https://img.shields.io/github/stars/wanghley/anno-grid.svg?style=for-the-badge
-[stars-url]: https://github.com/wanghley/anno-grid/stargazers
-[issues-shield]: https://img.shields.io/github/issues/wanghley/anno-grid.svg?style=for-the-badge
-[issues-url]: https://github.com/wanghley/anno-grid/issues
-[license-shield]: https://img.shields.io/github/license/wanghley/anno-grid.svg?style=for-the-badge
-[license-url]: https://github.com/wanghley/anno-grid/blob/master/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+### Enterprise Learning
+- **Container Orchestration** (Docker Compose → Kubernetes)
+- **Observability** (Prometheus, Grafana, Loki)
+- **Infrastructure as Code** (Terraform, Ansible)
+- **CI/CD Pipelines** (GitHub Actions on small scale)
+
+---
+
+## 📈 Roadmap
+
+### Phase 1 (Q2 2026) - Current
+- [x] 4-node cluster operational
+- [x] Monitoring stack (Prometheus + Grafana)
+- [x] Network security (Tailscale + Cloudflare)
+- [x] Professional documentation
+
+### Phase 2 (Q3 2026)
+- [ ] Kubernetes on cluster (lightweight)
+- [ ] Helm charts for deployments
+- [ ] Advanced monitoring (distributed tracing)
+- [ ] Automated backup to cloud storage
+
+### Phase 3 (Q4 2026)
+- [ ] Additional nodes (more compute/storage)
+- [ ] Edge ML model optimization
+- [ ] Advanced networking (VLANs, QoS)
+- [ ] Community examples library
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
+
+---
+
+## 💰 Cost Analysis
+
+| Component | Cost | Notes |
+|-----------|------|-------|
+| Hardware (4 nodes) | $450 | Orange Pi, Jetson, 2× Raspberry Pi |
+| Network Equipment | $80 | Switch, cables, adapters |
+| Storage (2TB USB) | $120 | External drives for NAS |
+| **Total Initial** | **$650** | Complete cluster |
+| **Annual Operating** | ~$45 | Electricity only |
+| **5-Year TCO** | ~$875 | vs $5,000+ traditional server |
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Areas for contribution:
+- Documentation improvements
+- New service examples
+- Monitoring dashboards
+- Deployment automation
+- Bug reports and fixes
+
+---
+
+## 📞 Support & Community
+
+- **Issues**: [GitHub Issues](https://github.com/wanghley/anno-grid/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/wanghley/anno-grid/discussions)
+- **Documentation**: See `/docs` directory
+- **Community**: r/HomeServer, r/raspberry_pi, Raspberry Pi Forums
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see [LICENSE.md](LICENSE.md) for details.
+
+---
+
+## 🙏 Acknowledgments
+
+Built as part of **Duke University's CoLab Initiative** - making infrastructure education accessible to everyone.
+
+### Key Technologies
+- [Docker](https://www.docker.com/) - Containerization
+- [Prometheus](https://prometheus.io/) - Metrics collection
+- [Grafana](https://grafana.com/) - Visualization
+- [Tailscale](https://tailscale.com/) - VPN mesh network
+- [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) - Safe external access
+
+---
+
+<div align="center">
+
+**Built with ❤️ for infrastructure enthusiasts worldwide**
+
+[⬆ Back to Top](#annogrid-professional-multi-node-home--edge-infrastructure)
+
+</div>

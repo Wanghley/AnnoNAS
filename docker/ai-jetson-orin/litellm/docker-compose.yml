@@ -1,0 +1,42 @@
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: litellm-proxy
+    restart: unless-stopped
+    ports:
+      - "${LITELLM_PORT}:4000"
+    env_file: .env
+    environment:
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - LITELLM_LOG=WARNING
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["--config", "/app/config.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')\" 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "${OPEN_WEBUI_PORT}:8080"
+    environment:
+      - OPENAI_API_BASE_URL=http://litellm:4000/v1
+      - OPENAI_API_KEY=${LITELLM_MASTER_KEY}
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - HF_TOKEN=${HF_TOKEN}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./open-webui-data:/app/backend/data
+    depends_on:
+      litellm:
+        condition: service_healthy
