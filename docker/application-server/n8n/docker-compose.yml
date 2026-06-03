@@ -31,6 +31,7 @@ services:
       WEBHOOK_URL: https://n8n.wanghley.com/
       N8N_PROXY_HOPS: 1
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      
 
       # ---- Storage ----
       N8N_DEFAULT_BINARY_DATA_MODE: filesystem
@@ -49,6 +50,7 @@ services:
       # Heap ~75% of container limit. 1.5GB heap → 2GB mem_limit
       NODE_OPTIONS: --max-old-space-size=1536
       NODE_ENV: production
+      NODE_FUNCTION_ALLOW_BUILTIN: buffer
       N8N_RELEASE_TYPE: stable
       NPM_CONFIG_UPDATE_NOTIFIER: "false"
 
@@ -58,8 +60,8 @@ services:
       N8N_DIAGNOSTICS_ENABLED: "false"
     volumes:
       - n8n_storage:/home/node/.n8n
-    networks:
-      - databases_default
+    #networks:
+    #  - databases_default
     expose:
       - "5679"  # task broker, internal only
     healthcheck:
@@ -95,8 +97,8 @@ services:
       N8N_RUNNERS_TASK_BROKER_URI: http://n8n:5679
       NODE_OPTIONS: --max-old-space-size=512
       NODE_ENV: production
-    networks:
-      - databases_default
+    #networks:
+    #  - databases_default
     deploy:
       resources:
         limits:
@@ -113,8 +115,8 @@ services:
 volumes:
   n8n_storage:
     name: N8n-n8n_storage
-    external: true   # set to false if you want compose to create it fresh
+    external: false   # set to false if you want compose to create it fresh
 
-networks:
-  databases_default:
-    external: true
+#networks:
+#  databases_default:
+#    external: true
