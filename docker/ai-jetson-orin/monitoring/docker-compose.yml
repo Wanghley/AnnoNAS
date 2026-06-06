@@ -47,9 +47,9 @@ services:
     container_name: topology-exporter
     restart: unless-stopped
     network_mode: host
-    volumes:
-      - ~/.ssh:/root/.ssh:ro
     env_file: .env
+    volumes:
+      - ./nodes.yml:/etc/topology/nodes.yml:ro
 
   grafana:
     image: grafana/grafana:latest

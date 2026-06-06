@@ -55,17 +55,3 @@ scrape_configs:
     static_configs:
       - targets: ['100.85.193.50:9200']
 
-  - job_name: 'ntopng'
-    static_configs:
-      - targets: ['100.85.193.50:3001']
-        labels:
-          nodename: anno-ai-jetson-orin-01
-      - targets: ['100.123.183.36:3001']
-        labels:
-          nodename: anno-app-opi3b-01
-      - targets: ['100.101.178.87:3001']
-        labels:
-          nodename: anno-gw-mon-rpi3b-01
-      - targets: ['100.114.225.52:3001']
-        labels:
-          nodename: anno-nas-rpi3b-01

@@ -7,10 +7,31 @@ services:
     image: prom/node-exporter:latest
     container_name: annogrid-node-exporter
     restart: unless-stopped
+    pid: "host"
     volumes:
       - '/:/host:ro,rslave'
+      - '/proc:/host/proc:ro'
+      - '/sys:/host/sys:ro'
     ports:
       - "9100:9100"
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/containerd/.+)($$|/)'
+    networks:
+      - annogrid
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: annogrid-cadvisor
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
     networks:
       - annogrid
 

@@ -4,6 +4,7 @@ services:
   server:
     image: twentycrm/twenty:${TAG:-latest}
     platform: linux/arm64        # explicit on SBC hosts
+    network_mode: host
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
     ports:
