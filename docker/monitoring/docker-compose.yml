@@ -2,6 +2,7 @@ name: node-monitoring
 
 services:
 
+  # Hardware Metrics for Prometheus
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -15,7 +16,10 @@ services:
     command:
       - '--path.rootfs=/host'
       - '--web.listen-address=0.0.0.0:9100'
+      - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/containerd/.+)($$|/)'
+      - '--collector.netdev.device-exclude=^(lo|docker[0-9]+|br-.+|veth.+)$$'
 
+  # Container Metrics for Prometheus
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -29,6 +33,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     privileged: true
 
+  # Real-time Per-Second Telemetry
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
@@ -45,20 +50,6 @@ services:
       - /sys:/host/sys:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  # Container Metrics for Prometheus
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    restart: always
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    privileged: true
 
   # Log Shipper for Loki
   promtail:

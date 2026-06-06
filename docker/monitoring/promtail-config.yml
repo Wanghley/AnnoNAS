@@ -6,15 +6,26 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  # This uses the variable defined in your .env / docker-compose
-  - url: http://100.85.193.50:3100/loki/api/v1/push
+  - url: http://${GATEWAY_IP}:3100/loki/api/v1/push
 
 scrape_configs:
+
+  # System logs from /var/log
   - job_name: system
     static_configs:
-    - targets:
-        - localhost
-      labels:
-        job: varlogs
-        # The 'host' label is now handled by the command line in docker-compose
-        __path__: /var/log/*log
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*log
+
+  # Docker container logs
+  - job_name: docker
+    pipeline_stages:
+      - docker: {}
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          __path__: /var/lib/docker/containers/*/*-json.log
