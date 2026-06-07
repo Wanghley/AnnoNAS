@@ -1,0 +1,30 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:lts
+    restart: always
+    command: --http-enabled
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - "0.0.0.0:9443:9443"
+      - "0.0.0.0:9000:9000"
+      - "0.0.0.0:8000:8000"
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+        reservations:
+          memory: 64m
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 1024
+        hard: 65535
+volumes:
+  portainer_data:
+    name: portainer_data
+networks:
+  default:
+    name: portainer_network
