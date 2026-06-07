@@ -29,6 +29,22 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter-orin
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - /:/host:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - '--path.rootfs=/host'
+      - '--web.listen-address=0.0.0.0:9100'
+      - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/containerd/.+)($$|/)'
+      - '--collector.netdev.device-exclude=^(lo|docker[0-9]+|br-.+|veth.+)$$'
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor-orin
