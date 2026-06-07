@@ -1,0 +1,25 @@
+name: dockpeek
+
+networks:
+  annogrid:
+    external: true
+
+services:
+  dockpeek:
+    image: dockpeek/dockpeek:latest
+    container_name: annogrid-dockpeek
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - SECRET_KEY=${DOCKPEEK_SECRET_KEY}
+      - USERNAME=${DOCKPEEK_USERNAME}
+      - PASSWORD=${DOCKPEEK_PASSWORD}
+      # Server name for UI (optional, auto-detected from Docker API if not set)
+      - DOCKER_HOST_NAME=${DOCKPEEK_HOST_NAME:-}
+    ports:
+      - "3420:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - annogrid
