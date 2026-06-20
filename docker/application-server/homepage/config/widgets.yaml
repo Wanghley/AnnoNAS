@@ -1,0 +1,19 @@
+- search:
+    provider: duckduckgo
+    target: _blank
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+      dateStyle: medium
+      hour12: false
+
+- resources:
+    label: anno-app
+    cpu: true
+    memory: true
+    disk: /
+    diskUnits: gbytes
+    units: metric
+    refresh: 5000

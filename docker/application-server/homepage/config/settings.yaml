@@ -1,0 +1,32 @@
+title: AnnoGrid
+description: Homelab Dashboard
+favicon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/homepage.png
+theme: dark
+color: zinc
+headerStyle: clean
+language: en
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: false
+  showSearchSuggestions: false
+
+layout:
+  Media:
+    style: row
+    columns: 4
+  Automation:
+    style: row
+    columns: 4
+  AI:
+    style: row
+    columns: 4
+  Personal:
+    style: row
+    columns: 4
+  Infrastructure:
+    style: row
+    columns: 4
+  Monitoring:
+    style: row
+    columns: 4

@@ -1,0 +1,28 @@
+name: homepage
+
+networks:
+  annogrid:
+    external: true
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: annogrid-homepage
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ}
+      HOMEPAGE_VAR_PORTAINER_KEY: ${HOMEPAGE_VAR_PORTAINER_KEY}
+      HOMEPAGE_VAR_JELLYFIN_KEY: ${HOMEPAGE_VAR_JELLYFIN_KEY}
+      HOMEPAGE_VAR_GRAFANA_USER: ${HOMEPAGE_VAR_GRAFANA_USER}
+      HOMEPAGE_VAR_GRAFANA_PASS: ${HOMEPAGE_VAR_GRAFANA_PASS}
+      HOMEPAGE_VAR_LITELLM_PORT: ${HOMEPAGE_VAR_LITELLM_PORT}
+      HOMEPAGE_VAR_OPEN_WEBUI_PORT: ${HOMEPAGE_VAR_OPEN_WEBUI_PORT}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config:/app/config
+    ports:
+      - "3033:3000"
+    networks:
+      - annogrid

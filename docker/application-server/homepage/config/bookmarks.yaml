@@ -1,0 +1,24 @@
+- Nodes:
+    - anno-app (OrangePi 3B+):
+        - href: http://anno-app-opi3bp-01.local
+          abbr: APP
+    - anno-ai (Jetson Orin Nano):
+        - href: http://anno-ai-jetson-orin-nano-01.local
+          abbr: AI
+    - anno-nas (Raspberry Pi 3B+):
+        - href: http://anno-nas-rpi3bp-01.local
+          abbr: NAS
+    - anno-gw (Raspberry Pi 3B+):
+        - href: http://anno-gw-mon-rpi3bp-01.local
+          abbr: GW
+
+- Quick Access:
+    - Cloudflare Dash:
+        - href: https://dash.cloudflare.com
+          abbr: CF
+    - GitHub — AnnoGrid:
+        - href: https://github.com
+          abbr: GH
+    - Tailscale:
+        - href: https://login.tailscale.com
+          abbr: TS

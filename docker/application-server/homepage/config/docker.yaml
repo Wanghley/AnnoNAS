@@ -1,0 +1,17 @@
+# anno-app — local socket (Homepage runs on this host)
+anno-app:
+  socket: /var/run/docker.sock
+
+# Remote hosts — requires docker-socket-proxy running on each node (port 2375)
+# See: each node's docker-compose.yml for the socket-proxy service
+anno-ai:
+  host: anno-ai-jetson-orin-nano-01.local
+  port: 2375
+
+anno-gw:
+  host: anno-gw-mon-rpi3bp-01.local
+  port: 2375
+
+anno-nas:
+  host: anno-nas-rpi3bp-01.local
+  port: 2375
