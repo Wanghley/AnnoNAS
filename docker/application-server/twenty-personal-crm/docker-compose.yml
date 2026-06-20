@@ -1,50 +1,30 @@
 name: twenty
 
 services:
-  server:
-    image: twentycrm/twenty:${TAG:-latest}
-    platform: linux/arm64        # explicit on SBC hosts
-    network_mode: host
-    volumes:
-      - server-local-data:/app/packages/twenty-server/.local-storage
+  twenty:
+    image: twentycrm/twenty:latest
+    container_name: twenty_crm
     ports:
-      - "3000:3000"
-    env_file: .env
-    depends_on:
-      redis:
-        condition: service_healthy
-    healthcheck:
-      test: curl --fail http://localhost:3000/healthz
-      interval: 10s
-      timeout: 10s
-      retries: 20
-      start_period: 600s
-    restart: unless-stopped
-
-  worker:
-    image: twentycrm/twenty:${TAG:-latest}
-    platform: linux/arm64
-    volumes:
-      - server-local-data:/app/packages/twenty-server/.local-storage
-    command: ["yarn", "worker:prod"]
-    env_file: .env
+      - "${PORT}:${PORT}"
     environment:
-      DISABLE_DB_MIGRATIONS: "true"
-      DISABLE_CRON_JOBS_REGISTRATION: "true"
-    depends_on:
-      server:
-        condition: service_healthy
+      # Database Connection
+      - PG_DATABASE_HOST=${PG_DATABASE_HOST}
+      - PG_DATABASE_PORT=${PG_DATABASE_PORT}
+      - PG_DATABASE_NAME=${PG_DATABASE_NAME}
+      - PG_DATABASE_USER=${PG_DATABASE_USER}
+      - PG_DATABASE_PASSWORD=${PG_DATABASE_PASSWORD}
+      
+      # App Routing
+      - SERVER_URL=http://${ORANGE_PI_IP}:${PORT}
+      - PORT=${PORT}
+      
+      # Core Engine Config
+      - APP_SECRET=${APP_SECRET}
+      - NODE_ENV=production
     restart: unless-stopped
+    networks:
+      - core-data_default
 
-  redis:
-    image: redis:alpine
-    restart: unless-stopped
-    command: ["--maxmemory-policy", "noeviction"]
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-volumes:
-  server-local-data:
+networks:
+  core-data_default:
+    external: true
