@@ -32,21 +32,21 @@
 - AI:
     - Open WebUI:
         icon: openwebui.png
-        href: "http://anno-ai-jetson-orin-nano-01.local:{{HOMEPAGE_VAR_OPEN_WEBUI_PORT}}"
+        href: "http://100.85.193.50:{{HOMEPAGE_VAR_OPEN_WEBUI_PORT}}"
         container: open-webui
         server: anno-ai
         description: LLM chat interface
 
     - LiteLLM:
         icon: litellm.png
-        href: "http://anno-ai-jetson-orin-nano-01.local:{{HOMEPAGE_VAR_LITELLM_PORT}}"
+        href: "http://100.85.193.50:{{HOMEPAGE_VAR_LITELLM_PORT}}"
         container: litellm-proxy
         server: anno-ai
         description: LLM proxy gateway
 
     - Homelable:
         icon: mdi-home-automation
-        href: http://anno-ai-jetson-orin-nano-01.local:3002
+        href: http://100.85.193.50:3002
         container: frontend
         server: anno-ai
         description: AI homelab assistant
@@ -93,42 +93,42 @@
 - Monitoring:
     - Grafana:
         icon: grafana.png
-        href: http://anno-ai-jetson-orin-nano-01.local:3001
+        href: http://100.85.193.50:3001
         container: grafana
         server: anno-ai
         description: Metrics and dashboards
         widget:
             type: grafana
-            url: http://anno-ai-jetson-orin-nano-01.local:3001
+            url: http://100.85.193.50:3001
             username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
             password: "{{HOMEPAGE_VAR_GRAFANA_PASS}}"
 
     - Prometheus:
         icon: prometheus.png
-        href: http://anno-ai-jetson-orin-nano-01.local:9090
+        href: http://100.85.193.50:9090
         container: prometheus-hub
         server: anno-ai
         description: Metrics collection hub
         widget:
             type: prometheus
-            url: http://anno-ai-jetson-orin-nano-01.local:9090
+            url: http://100.85.193.50:9090
 
     - Alertmanager:
         icon: alertmanager.png
-        href: http://anno-ai-jetson-orin-nano-01.local:9093
+        href: http://100.85.193.50:9093
         container: alertmanager
         server: anno-ai
         description: Alert routing and silencing
 
     - Netdata:
         icon: netdata.png
-        href: http://anno-nas-rpi3b-01.local:19999
+        href: http://100.114.225.52:19999
         container: netdata
         server: anno-nas
         description: Real-time node monitoring
         widget:
             type: netdata
-            url: http://anno-nas-rpi3b-01.local:19999
+            url: http://100.114.225.52:19999
 
 ########################################################################
 - _hidden0:
@@ -138,15 +138,15 @@
         description: ⠀
     - anno-ai:
       - icon: mdi-gpu
-        href: http://anno-ai-jetson-orin-nano-01.local
+        href: http://100.85.193.50
         description: ⠀
     - anno-nas:
       - icon: mdi-harddisk
-        href: http://anno-nas-rpi3b-01.local
+        href: http://100.114.225.52
         description: ⠀
     - anno-gw:
       - icon: mdi-router-network
-        href: http://anno-gw-mon-rpi3b-01.local
+        href: http://100.101.178.87
         description: ⠀
 
 ########################################################################
@@ -210,7 +210,7 @@
 ########################################################################
 - anno-ai Stats:
     - _hidden:
-        href: http://anno-ai-jetson-orin-nano-01.local
+        href: http://100.85.193.50
         widget:
           type: customapi
           url: http://host.docker.internal:3033/static/stats.json
@@ -241,7 +241,7 @@
 ########################################################################
 - anno-nas Stats:
     - _hidden:
-        href: http://anno-nas-rpi3b-01.local
+        href: http://100.114.225.52
         widget:
           type: customapi
           url: http://host.docker.internal:3033/static/stats.json
@@ -272,7 +272,7 @@
 ########################################################################
 - anno-gw Stats:
     - _hidden:
-        href: http://anno-gw-mon-rpi3b-01.local
+        href: http://100.101.178.87
         widget:
           type: customapi
           url: http://host.docker.internal:3033/static/stats.json
@@ -463,10 +463,10 @@
 ########################################################################
 - System Alerts:
     - ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ Prometheus · Active Alerts ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀:
-        href: http://anno-ai-jetson-orin-nano-01.local:9090/alerts
+        href: http://100.85.193.50:9090/alerts
         widget:
           type: prometheus
-          url: http://anno-ai-jetson-orin-nano-01.local:9090
+          url: http://100.85.193.50:9090
 
 
 ########################################################################

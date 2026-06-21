@@ -2,16 +2,16 @@
 anno-app:
   socket: /var/run/docker.sock
 
-# Remote hosts — requires docker-socket-proxy running on each node (port 2375)
-# See: each node's docker-compose.yml for the socket-proxy service
+# Remote hosts via Tailscale IPs — .local mDNS does not resolve inside Docker containers.
+# Requires docker-socket-proxy running on each node (port 2375).
 anno-ai:
-  host: anno-ai-jetson-orin-nano-01.local
+  host: 100.85.193.50
   port: 2375
 
 anno-gw:
-  host: anno-gw-mon-rpi3bp-01.local
+  host: 100.101.178.87
   port: 2375
 
 anno-nas:
-  host: anno-nas-rpi3bp-01.local
+  host: 100.114.225.52
   port: 2375
