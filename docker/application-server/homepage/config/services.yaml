@@ -7,7 +7,7 @@
 - Media:
     - Jellyfin:
         icon: jellyfin.png
-        href: http://anno-app-opi3b-01.local:8096
+        href: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
         container: annogrid-jellyfin
         server: anno-app
         description: Multimedia streaming library
@@ -23,7 +23,7 @@
 - Automation:
     - n8n:
         icon: n8n.png
-        href: http://anno-app-opi3b-01.local:5678
+        href: "{{HOMEPAGE_VAR_N8N_URL}}"
         container: annogrid-n8n
         server: anno-app
         description: Workflow automation engine
@@ -32,21 +32,21 @@
 - AI:
     - Open WebUI:
         icon: openwebui.png
-        href: "http://100.85.193.50:{{HOMEPAGE_VAR_OPEN_WEBUI_PORT}}"
+        href: "{{HOMEPAGE_VAR_OPENWEBUI_URL}}"
         container: open-webui
         server: anno-ai
         description: LLM chat interface
 
     - LiteLLM:
         icon: litellm.png
-        href: "http://100.85.193.50:{{HOMEPAGE_VAR_LITELLM_PORT}}"
+        href: "{{HOMEPAGE_VAR_LITELLM_URL}}"
         container: litellm-proxy
         server: anno-ai
         description: LLM proxy gateway
 
     - Homelable:
         icon: mdi-home-automation
-        href: http://100.85.193.50:3002
+        href: "{{HOMEPAGE_VAR_HOMELABLE_URL}}"
         container: frontend
         server: anno-ai
         description: AI homelab assistant
@@ -55,14 +55,14 @@
 - Personal:
     - Monica:
         icon: monica.png
-        href: http://anno-app-opi3b-01.local:8080
+        href: "{{HOMEPAGE_VAR_MONICA_URL}}"
         container: annogrid-monica
         server: anno-app
         description: Personal relationship CRM
 
     - Twenty CRM:
         icon: twenty.png
-        href: http://anno-app-opi3b-01.local:3000
+        href: "{{HOMEPAGE_VAR_TWENTY_URL}}"
         container: twenty-server
         server: anno-app
         description: Open source CRM platform
@@ -71,7 +71,7 @@
 - Management:
     - Portainer:
         icon: portainer.png
-        href: https://anno-app-opi3b-01.local:9443
+        href: "{{HOMEPAGE_VAR_PORTAINER_URL}}"
         container: portainer
         server: anno-app
         description: Docker container management
@@ -84,7 +84,7 @@
 
     - Dockpeek:
         icon: docker.png
-        href: http://anno-app-opi3b-01.local:3420
+        href: "http://100.67.194.10:3420"
         container: annogrid-dockpeek
         server: anno-app
         description: Container status viewer
@@ -93,7 +93,7 @@
 - Monitoring:
     - Grafana:
         icon: grafana.png
-        href: http://100.85.193.50:3001
+        href: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
         container: grafana
         server: anno-ai
         description: Metrics and dashboards
@@ -105,7 +105,7 @@
 
     - Prometheus:
         icon: prometheus.png
-        href: http://100.85.193.50:9090
+        href: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
         container: prometheus-hub
         server: anno-ai
         description: Metrics collection hub
@@ -115,14 +115,14 @@
 
     - Alertmanager:
         icon: alertmanager.png
-        href: http://100.85.193.50:9093
+        href: "{{HOMEPAGE_VAR_ALERTMANAGER_URL}}"
         container: alertmanager
         server: anno-ai
         description: Alert routing and silencing
 
     - Netdata:
         icon: netdata.png
-        href: http://100.114.225.52:19999
+        href: "{{HOMEPAGE_VAR_NETDATA_URL}}"
         container: netdata
         server: anno-nas
         description: Real-time node monitoring
