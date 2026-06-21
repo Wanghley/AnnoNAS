@@ -29,6 +29,13 @@ services:
     networks:
       annogrid:
         ipv4_address: 172.20.0.10
+    labels:
+      homepage.group: anno-app
+      homepage.name: PostgreSQL
+      homepage.icon: postgresql.png
+      homepage.description: Primary SQL database
+      homepage.server: anno-app
+      homepage.container: annogrid-postgres
     healthcheck:
       # Use a simpler healthcheck that doesn't rely on complex shell logic
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
@@ -52,6 +59,13 @@ services:
     networks:
       annogrid:
         ipv4_address: 172.20.0.11
+    labels:
+      homepage.group: anno-app
+      homepage.name: MariaDB
+      homepage.icon: mariadb.png
+      homepage.description: Relational database
+      homepage.server: anno-app
+      homepage.container: annogrid-mariadb
     healthcheck:
       test: ["CMD-SHELL", "mariadb-admin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
       interval: 5s
@@ -69,6 +83,13 @@ services:
     networks:
       annogrid:
         ipv4_address: 172.20.0.12
+    labels:
+      homepage.group: anno-app
+      homepage.name: Redis
+      homepage.icon: redis.png
+      homepage.description: In-memory cache
+      homepage.server: anno-app
+      homepage.container: annogrid-redis
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s

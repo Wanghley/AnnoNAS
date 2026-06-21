@@ -14,6 +14,14 @@ services:
     image: monica:apache
     container_name: annogrid-monica
     restart: unless-stopped
+    labels:
+      homepage.group: anno-app
+      homepage.name: Monica
+      homepage.icon: monica.png
+      homepage.href: "http://100.67.194.10:8080"
+      homepage.description: Personal CRM
+      homepage.server: anno-app
+      homepage.container: annogrid-monica
     depends_on:
       mariadb:
         condition: service_healthy
@@ -35,6 +43,14 @@ services:
     image: n8nio/n8n:latest
     container_name: annogrid-n8n
     restart: unless-stopped
+    labels:
+      homepage.group: anno-app
+      homepage.name: n8n
+      homepage.icon: n8n.png
+      homepage.href: "http://100.67.194.10:5678"
+      homepage.description: Workflow automation
+      homepage.server: anno-app
+      homepage.container: annogrid-n8n
     depends_on:
       postgres:
         condition: service_healthy
@@ -58,6 +74,14 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: annogrid-jellyfin
     restart: unless-stopped
+    labels:
+      homepage.group: anno-app
+      homepage.name: Jellyfin
+      homepage.icon: jellyfin.png
+      homepage.href: "http://100.67.194.10:8096"
+      homepage.description: Media streaming
+      homepage.server: anno-app
+      homepage.container: annogrid-jellyfin
     environment:
       TZ: ${TZ}
     volumes:
