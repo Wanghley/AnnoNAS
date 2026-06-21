@@ -26,3 +26,11 @@ services:
       - "7575:7575"
     networks:
       - annogrid
+    labels:
+      homepage.group: anno-app
+      homepage.name: Homarr
+      homepage.icon: homarr.png
+      homepage.href: "http://100.67.194.10:7575"
+      homepage.description: Alt homelab dashboard
+      homepage.server: anno-app
+      homepage.container: annogrid-homarr

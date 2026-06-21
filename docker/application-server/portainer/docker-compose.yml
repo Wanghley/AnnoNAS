@@ -22,6 +22,14 @@ services:
       nofile:
         soft: 1024
         hard: 65535
+    labels:
+      homepage.group: anno-app
+      homepage.name: Portainer
+      homepage.icon: portainer.png
+      homepage.href: "https://100.67.194.10:9443"
+      homepage.description: Container management
+      homepage.server: anno-app
+      homepage.container: portainer
 volumes:
   portainer_data:
     name: portainer_data
