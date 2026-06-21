@@ -1,0 +1,686 @@
+########################################################################################################################################################################################################
+- Files Management:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: https://cloud.example.com
+        container: nextcloud
+        description: Private cloud file storage
+        widget:
+            type: nextcloud
+            url: https://cloud.example.com
+            key: [REDACTED-KEY]
+            fields: ["freespace", "numfiles", "numshares"]
+
+    - Immich:
+        icon: immich.png
+        href: https://photos.example.com
+        container: immich
+        description: Photo backup library 
+        widget:
+            type: immich
+            url: https://photos.example.com
+            key: [REDACTED-KEY]
+            version: 2
+            fields: ["photos", "videos", "storage"]
+
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://jellyfin.example.com
+        container: jellyfin
+        description: Multimedia streaming library
+        widget:
+            type: jellyfin
+            url: https://jellyfin.example.com
+            key: [REDACTED-KEY]
+            enableBlocks: true 
+            enableNowPlaying: false
+            enableUser: false
+            showEpisodeNumber: true 
+            expandOneStreamToTwoRows: false
+            fields: ["movies", "series", "songs"]
+
+    - Mealie:
+        icon: mealie.png
+        href: https://chef.example.com
+        container: mealie
+        description: Recipe management platform
+        widget:
+            type: mealie
+            url: https://chef.example.com
+            key: [REDACTED-JWT]
+            version: 2
+            fields: ["recipes", "users"]
+
+########################################################################################################################################################################################################
+- Media Processing:
+    - Jellyseerr:
+        icon: jellyseerr.png
+        href: https://jellyseerr.example.com
+        container: jellyseerr
+        description: Request new library media
+        widget:
+            type: jellyseerr
+            url: https://jellyseerr.example.com
+            key: [REDACTED-KEY]
+            fields: ["pending", "approved", "available"]
+
+    - SabNZBD:
+        icon: sabnzbd.png
+        href: https://sab.example.com
+        container: sabnzbd
+        description: Usenet download processor
+        widget:
+            type: sabnzbd
+            url: https://sab.example.com
+            key: [REDACTED-KEY]
+            fields: ["rate", "queue", "timeleft"]
+
+    - Deluge:
+        icon: deluge.png
+        href: https://deluge.example.com
+        container: deluge
+        description: Torrent download automation
+        widget:
+            type: deluge
+            url: https://deluge.example.com
+            password: [REDACTED-PASSWORD]
+            fields: ["leech", "download", "seed"]
+
+    - Prowlarr:
+        icon: /icons/services/prowlarr.png
+        href: https://prowlarr.example.com
+        container: prowlarr
+        description: Indexer integration for downloads
+        widget:
+            type: prowlarr
+            url: https://prowlarr.example.com
+            key: [REDACTED-KEY]
+            fields: ["numberOfGrabs", "numberOfQueries"]
+########################################################################################################################################################################################################
+- Media Management:
+    - Radarr:
+        icon: /icons/services/radarr.png
+        href: https://radarr.example.com
+        container: radarr
+        description: Automate downloading movies
+        widget:
+            type: radarr
+            url: https://radarr.example.com
+            key: [REDACTED-KEY]
+            fields: ["wanted", "queued", "movies"]
+            
+    - Sonarr:
+        icon: sonarr.png
+        href: https://sonarr.example.com
+        container: sonarr
+        description: Automate downloading series
+        widget:
+            type: sonarr
+            url: https://sonarr.example.com
+            key: [REDACTED-KEY]
+            fields: ["wanted", "queued", "series"]
+
+    - Tdarr:
+        icon: tdarr.png
+        href: https://tdarr.example.com
+        container: tdarr
+        description: Automate media transcoding
+        widget:
+            type: tdarr
+            url: https://tdarr.example.com
+            key: [REDACTED-KEY]
+            fields: ["queue", "processed", "saved"]
+
+    - Bazarr:
+        icon: bazarr.png
+        href: https://bazarr.example.com
+        container: bazarr
+        description: Media subtitles management
+        widget:
+            type: bazarr
+            url: https://bazarr.example.com
+            key: [REDACTED-KEY]
+            fields: ["missingEpisodes", "missingMovies"]
+########################################################################################################################################################################################################
+- System Monitoring:
+    - Scrutiny:
+        icon: /icons/services/scrutiny.png
+        href: https://scrutiny.example.com
+        container: scrutiny
+        description: Monitor hard drive health
+        widget:
+            type: scrutiny
+            url: https://scrutiny.example.com
+            fields: ["passed", "failed", "unknown"]
+            
+    - Peanut:
+        icon: peanut.png
+        href: http://0.0.0.0/
+        container: peanut
+        description: Network UPS Tools interface
+        widget:
+            type: peanut
+            url: http://0.0.0.0/
+            key: ups
+            fields: ["battery_charge", "ups_load", "ups_status"]
+
+    - Speedtest:
+        icon: speedtest-tracker.png
+        href: http://0.0.0.0
+        container: speedtest
+        description: Network speed tracker
+        widget:
+            type: speedtest
+            url: http://0.0.0.0
+            bitratePrecision: 0
+            fields: ["download", "upload", "ping"]
+
+    - Portainer:
+        icon: portainer.png
+        href: http://0.0.0.0
+        container: portainer
+        description: Docker containers monitor
+        widget:
+            type: portainer
+            url: http://0.0.0.0
+            env: 2
+            key: [REDACTED-KEY]
+            fields: ["running", "stopped"]
+########################################################################################################################################################################################################
+- Cloud Services:
+    - Vaultwarden:
+        icon: /icons/services/vaultwarden.png
+        href: https://vault.example.com
+        container: vaultwarden
+        description: Password management
+
+    - Jellystat:
+        icon: /icons/services/jellystat.png
+        href: https://jellystat.example.com
+        container: jellystat
+        description: Media library statistics
+
+    - Wallos:
+        icon: wallos.png
+        href: https://costs.example.com
+        container: wallos
+        description: Subcription cost tracker 
+########################################################################################################################################################################################################
+- Discord Bots:
+    - SiennaGuard:
+        icon: /icons/services/siennaguard.png
+        href: https://discord.com/developers/applications/000000000000000000/information
+        container: guardbot
+        description: Modular moderation bot
+
+    - SiennaTunes:
+        icon: /icons/services/siennatunes.png
+        href: https://discord.com/developers/applications/000000000000000000/information
+        container: tunesbot
+        description: Jellyfin music player bot
+
+    - SiennaPulse:
+        icon: /icons/services/siennapulse.png
+        href: https://discord.com/developers/applications/000000000000000000/information
+        container: pulsebot
+        description: Game server status bot
+########################################################################################################################################################################################################
+- Tools Collection:
+    - Adminer:
+        icon: /icons/services/adminer.png
+        href: http://0.0.0.0/
+        container: adminer
+        description: Database management
+
+    - Netdata:
+        icon: /icons/services/netdata.png
+        href: http://0.0.0.0
+        container: netdata
+        description: Network monitoring utility
+
+    - Dozzle:
+        icon: /icons/services/dozzle.png
+        href: https://dozzle.example.com
+        container: dozzle
+        description: Docker container logs
+########################################################################################################################################################################################################
+- Sharing Platforms:
+    - Fireshare:
+        icon: fireshare.png
+        href: https://clips.example.com
+        container: fireshare
+        description: Game clip sharing
+
+    - Pairdrop:
+        icon: pairdrop.png
+        href: https://pairdrop.example.com
+        container: pairdrop
+        description: Simple file transfer tool
+
+    - Pastey:
+        icon: pastey.png
+        href: https://pastey.example.com
+        container: pastey
+        description: Encrypted pasting tool
+########################################################################################################################################################################################################
+- Game Servers:
+    - Minecraft:
+        icon: /icons/services/crafty.png
+        href: https://crafty.example.com
+        container: crafty
+        description: Java game hosting
+
+    - Satisfactory:
+        icon: /icons/services/satisfactory.png
+        container: satisfactory
+        description: Steam game hosting
+
+    - TeamFortress:
+        icon: /icons/services/teamfortress2.png
+        container: teamfortress2
+        description: Steam game hosting
+########################################################################################################################################################################################################
+- Movies Library:
+   - _hidden:
+       href: https://jellyfin.example.com
+       widget:
+         type: customapi
+         url: https://home.example.com/static/stats.json
+         refreshInterval: 300000
+         display: grid
+         mappings:
+           - field:
+               jellyfin:
+                 movies:
+                   count
+             label: "Movies"
+             format: number
+           - field:
+               jellyfin:
+                 movies:
+                   storage
+             label: "Storage"
+             format: text
+           - field:
+               jellyfin:
+                 movies:
+                   plays
+             label: "Plays"
+             format: number
+           - field:
+               jellyfin:
+                 movies:
+                   runtime
+             label: "Runtime"
+             format: text
+########################################################################################################################################################################################################
+- Series Library:
+   - _hidden:
+       href: https://jellyfin.example.com
+       widget:
+         type: customapi
+         url: https://home.example.com/static/stats.json
+         refreshInterval: 300000
+         display: grid
+         mappings:
+           - field:
+               jellyfin:
+                 series:
+                   count
+             label: "Episodes"
+             format: number
+           - field:
+               jellyfin:
+                 series:
+                   storage
+             label: "Storage"
+             format: text
+           - field:
+               jellyfin:
+                 series:
+                   plays
+             label: "Plays"
+             format: number
+           - field:
+               jellyfin:
+                 series:
+                   runtime
+             label: "Runtime"
+             format: text
+########################################################################################################################################################################################################
+- Clips Library:
+   - _hidden:
+       href: https://clips.example.com
+       widget:
+           type: customapi
+           url: https://home.example.com/static/stats.json
+           refreshInterval: 300000
+           display: grid
+           mappings:
+               - field:
+                    clips:
+                      files
+                 label: "Clips"
+                 format: number
+               - field:
+                    clips:
+                      size
+                 label: "Storage"
+                 format: bytes
+               - field:
+                   clips:
+                     game_count
+                 label: "Games"
+                 format: number
+               - field:
+                   clips:
+                     runtime
+                 label: "Runtime"
+                 format: text
+########################################################################################################################################################################################################
+- Watch Time:
+    - _hidden:
+        href: https://jellyfin.example.com
+        widget:
+          type: customapi
+          url: https://home.example.com/static/stats.json
+          refreshInterval: 300000
+          display: grid
+          mappings:
+            - field:
+                jellyfin:
+                  watch_time:
+                    garnet
+              label: "Garnet"
+              format: text
+            - field:
+                jellyfin:
+                  watch_time:
+                    rasta
+              label: "Rasta"
+              format: text
+            - field:
+                jellyfin:
+                  watch_time:
+                    che
+              label: "Che"
+              format: text
+            - field:
+                jellyfin:
+                  watch_time:
+                    feather
+              label: "Feather"
+              format: text
+########################################################################################################################################################################################################
+- Popular Clients:
+    - _hidden:
+        href: https://jellyfin.example.com
+        widget:
+          type: customapi
+          url: https://home.example.com/static/stats.json
+          refreshInterval: 300000
+          display: grid
+          mappings:
+            - field:
+                jellyfin:
+                  popular_clients:
+                    first
+              label: "First"
+              format: text
+            - field:
+                jellyfin:
+                  popular_clients:
+                    second
+              label: "Second"
+              format: text
+            - field:
+                jellyfin:
+                  popular_clients:
+                    third
+              label: "Third"
+              format: text
+            - field:
+                jellyfin:
+                  popular_clients:
+                    fourth
+              label: "Fourth"
+              format: text
+########################################################################################################################################################################################################
+- Release Calendar:
+  - ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ LEGEND:⠀⠀🟢=Series ⠀⠀🔵=Movie:
+          href: https://jellyfin.example.com
+          widget:
+              type: calendar
+              firstDayInWeek: monday
+              view: monthly
+              maxEvents: 10
+              showTime: true
+              timezone: America/Denver
+              integrations:
+                - type: sonarr
+                  service_group: Media Management
+                  service_name: Sonarr
+                  color: green
+                  params:
+                    unmonitored: false
+                - type: radarr
+                  service_group: Media Management
+                  service_name: Radarr
+                  color: blue
+                  params:
+                    unmonitored: false
+########################################################################################################################################################################################################
+- Document Directories:
+    - _hidden:
+        href: https://cloud.example.com
+        widget:
+            type: customapi
+            url: https://home.example.com/static/stats.json
+            refreshInterval: 300000
+            display: grid
+            mappings:
+                - field:
+                    documents:
+                      garnet:
+                        stats
+                  label: "Garnet"
+                  format: text
+                - field:
+                    documents:
+                      rasta:
+                        stats
+                  label: "Rasta"
+                  format: text
+                - field:
+                    documents:
+                      che:
+                        stats
+                  label: "Che"
+                  format: text
+                - field:
+                    documents:
+                      feather:
+                        stats
+                  label: "Feather"
+                  format: text
+    - _hidden:
+        href: https://cloud.example.com
+        widget:
+            type: customapi
+            url: https://home.example.com/static/stats.json
+            refreshInterval: 300000
+            display: list
+            mappings:
+                - field:
+                    documents:
+                      combined:
+                        storage
+                  label: "TOTAL FILES"
+                  format: bytes
+                  additionalField:
+                    field:
+                      documents:
+                        combined:
+                          files
+                    format: number
+                    prefix: " - "
+                    suffix: " files"
+########################################################################################################################################################################################################
+- Camera Galleries:
+    - _hidden:
+        href: https://photos.example.com
+        widget:
+            type: customapi
+            url: https://home.example.com/static/stats.json
+            refreshInterval: 300000
+            display: grid
+            mappings:
+                - field:
+                    photos:
+                      garnet:
+                        stats
+                  label: "Garnet"
+                  format: text
+                - field:
+                    photos:
+                      rasta:
+                        stats
+                  label: "Rasta"
+                  format: text
+                - field:
+                    photos:
+                      che:
+                        stats
+                  label: "Che"
+                  format: text
+                - field:
+                    photos:
+                      feather:
+                        stats
+                  label: "Feather"
+                  format: text
+    - _hidden:
+            href: https://photos.example.com
+            widget:
+                type: customapi
+                url: https://home.example.com/static/stats.json
+                refreshInterval: 300000
+                display: list
+                mappings:
+                    - field:
+                        photos:
+                          combined:
+                            storage
+                      label: "TOTAL PHOTOS"
+                      format: bytes
+                      additionalField:
+                        field:
+                          photos:
+                            combined:
+                              photos
+                        format: number
+                        prefix: " - "
+                        suffix: " images"
+########################################################################################################################################################################################################
+- Music Libraries:
+    - _hidden:
+        href: https://jellyfin.example.com
+        widget:
+            type: customapi
+            url: https://home.example.com/static/stats.json
+            refreshInterval: 300000
+            display: grid
+            mappings:
+                - field:
+                    music:
+                      garnet:
+                        stats
+                  label: "Garnet"
+                  format: text
+                - field:
+                    music:
+                      rasta:
+                        stats
+                  label: "Rasta"
+                  format: text
+                - field:
+                    music:
+                      che:
+                        stats
+                  label: "Che"
+                  format: text
+                - field:
+                    music:
+                      graham:
+                        stats
+                  label: "Graham"
+                  format: text
+    - _hidden:
+        href: https://jellyfin.example.com
+        widget:
+            type: customapi
+            url: https://home.example.com/static/stats.json
+            refreshInterval: 300000
+            display: list
+            mappings:
+                - field:
+                    music:
+                      combined:
+                        size
+                  label: "TOTAL TRACKS"
+                  format: bytes
+                  additionalField:
+                    field:
+                      music:
+                        combined:
+                          files
+                    format: number
+                    prefix: " - "
+                    suffix: " songs"
+########################################################################################################################################################################################################
+- Databases:
+  - RedisDB:
+      icon: /icons/services/redis.png
+      container: redis
+      description: In-memory data structure store
+########################################################################################################################################################################################################
+- ⠀:
+  - MariaDB:
+      icon: /icons/services/mariadb.png
+      container: mariadb
+      description: Open source database system
+########################################################################################################################################################################################################
+- ⠀⠀:
+  - Collabora:
+      icon: /icons/services/collabora.png
+      container: collabora
+      description: Online document collaboration
+########################################################################################################################################################################################################
+- ⠀⠀⠀:
+  - Postgresql 15:
+      icon: /icons/services/sql15.png
+      container: postgresql15
+      description: Advanced SQL database (v15)
+########################################################################################################################################################################################################
+- ⠀⠀⠀⠀:
+  - Postgresql 16:
+      icon: /icons/services/sql16.png
+      container: postgresql16
+      description: Advanced SQL database (v16)
+########################################################################################################################################################################################################
+- ⠀⠀⠀⠀⠀:
+  - Postgresql 17:
+      icon: /icons/services/sql17.png
+      container: postgresql17
+      description: Advanced SQL database (v17)
+########################################################################################################################################################################################################
+- Homepage Configuration:
+  - Official Docs:
+      icon: /icons/services/homepage-docs.png
+      href: https://gethomepage.dev/
+      description: documentation for configuring this dashboard
+  - CSS Styler:
+        icon: /icons/services/homepage-styler.png
+        href: https://gethomepage.dev/
+        description: script to style custom.css for this dashboard
+########################################################################################################################################################################################################

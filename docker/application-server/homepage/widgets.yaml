@@ -1,34 +1,47 @@
 - logo:
-    icon: mdi-server-network
+    icon: /icons/favicon-large.png
 
 - greeting:
     text_size: 4xl
-    text: AnnoGrid
+    text: example.com
 
 - resources:
     expanded: false
-    cpu: true
-    memory: true
-    refresh: 2000
+    cpu: true 
+    cputemp: true
+    memory: true  
+    refresh: 1000
 
 - greeting:
     text_size: 4xl
     text: —
 
-- resources:
-    label: ROOT
-    expanded: true
+- resources: 
+    label: ARRAY
+    expanded: true 
     disk:
-      - /
+     - /array
+
+- resources: 
+    label: CACHE
+    expanded: true 
+    disk:
+     - /cache
+
+- resources: 
+    label: DEPOT
+    expanded: true 
+    disk:
+     - /depot
 
 - greeting:
     text_size: 4xl
     text: —
 
-- resources:
+- resources: 
     expanded: false
-    uptime: true
-    refresh: 5000
+    uptime: true 
+    refresh: 1000
 
 - datetime:
     text_size: 4xl
@@ -43,8 +56,8 @@
         hour12: false
 
 - search:
-    provider: duckduckgo
-    focus: false
+    provider: google 
+    focus: true
     showSearchSuggestions: true
     target: _parent
 
@@ -52,7 +65,7 @@
     label: Location
     latitude: 0.00
     longitude: 0.00
-    timezone: America/Sao_Paulo
+    timezone: UTC/Etc
     units: metric
     cache: 5
     format:

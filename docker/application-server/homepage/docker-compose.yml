@@ -18,6 +18,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config:/app/config
+      - ./public:/app/public/static
     ports:
       - "3033:3000"
     extra_hosts:

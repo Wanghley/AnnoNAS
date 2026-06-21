@@ -1,24 +1,35 @@
-- Nodes:
+- _hidden0:
     - anno-app (OrangePi 3B+):
-        - href: http://anno-app-opi3bp-01.local
-          abbr: APP
+      - icon: mdi-server
+        href: http://anno-app-opi3b-01.local
+        description: ⠀
     - anno-ai (Jetson Orin Nano):
-        - href: http://anno-ai-jetson-orin-nano-01.local
-          abbr: AI
+      - icon: mdi-gpu
+        href: http://anno-ai-jetson-orin-nano-01.local
+        description: ⠀
     - anno-nas (Raspberry Pi 3B+):
-        - href: http://anno-nas-rpi3bp-01.local
-          abbr: NAS
+      - icon: mdi-harddisk
+        href: http://anno-nas-rpi3b-01.local
+        description: ⠀
     - anno-gw (Raspberry Pi 3B+):
-        - href: http://anno-gw-mon-rpi3bp-01.local
-          abbr: GW
+      - icon: mdi-router-network
+        href: http://anno-gw-mon-rpi3b-01.local
+        description: ⠀
 
-- Quick Access:
-    - Cloudflare Dash:
-        - href: https://dash.cloudflare.com
-          abbr: CF
-    - GitHub — AnnoGrid:
-        - href: https://github.com
-          abbr: GH
+- _hidden1:
+    - Cloudflare:
+      - icon: cloudflare.png
+        href: https://dash.cloudflare.com
+        description: ⠀
     - Tailscale:
-        - href: https://login.tailscale.com
-          abbr: TS
+      - icon: tailscale.png
+        href: https://login.tailscale.com
+        description: ⠀
+    - GitHub:
+      - icon: github.png
+        href: https://github.com/Wanghley/AnnoGrid
+        description: ⠀
+    - Portainer:
+      - icon: portainer.png
+        href: https://anno-app-opi3b-01.local:9443
+        description: ⠀

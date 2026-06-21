@@ -1,32 +1,109 @@
 title: AnnoGrid
-description: Homelab Dashboard
-favicon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/homepage.png
+language: en
 theme: dark
 color: zinc
-headerStyle: clean
-language: en
+target: _self
+headerStyle: boxed
+statusStyle: "dot"
+hideVersion: true
+disableCollapse: true
 
-quicklaunch:
-  searchDescriptions: true
-  hideInternetSearch: false
-  showSearchSuggestions: false
+favicon: /icons/favicon.png
+background:
+    image: /images/background.png
 
 layout:
+  # ── HOME Tab ─────────────────────────────────────────────────────
   Media:
-    style: row
-    columns: 4
+      style: column
+      tab: HOME
+      icon: mdi-multimedia
   Automation:
-    style: row
-    columns: 4
+      style: column
+      tab: HOME
+      icon: mdi-robot-outline
   AI:
-    style: row
-    columns: 4
+      style: column
+      tab: HOME
+      icon: mdi-brain
   Personal:
-    style: row
-    columns: 4
-  Infrastructure:
-    style: row
-    columns: 4
+      style: column
+      tab: HOME
+      icon: mdi-account-outline
+  Management:
+      style: column
+      tab: HOME
+      icon: mdi-server
   Monitoring:
-    style: row
-    columns: 4
+      style: column
+      tab: HOME
+      icon: mdi-chart-line
+  _hidden0:
+      style: column
+      tab: HOME
+  _hidden1:
+      style: column
+      tab: HOME
+
+  # ── STAT Tab ─────────────────────────────────────────────────────
+  anno-app Stats:
+      style: column
+      tab: STAT
+      icon: mdi-chip
+  anno-ai Stats:
+      style: column
+      tab: STAT
+      icon: mdi-gpu
+  anno-nas Stats:
+      style: column
+      tab: STAT
+      icon: mdi-harddisk
+  anno-gw Stats:
+      style: column
+      tab: STAT
+      icon: mdi-router-network
+  Jellyfin Movies:
+      style: column
+      tab: STAT
+      icon: mdi-movie-roll
+  Jellyfin Series:
+      style: column
+      tab: STAT
+      icon: mdi-television-classic
+  Cluster Containers:
+      style: column
+      tab: STAT
+      icon: mdi-docker
+  Cluster Health:
+      style: column
+      tab: STAT
+      icon: mdi-heart-pulse
+  System Alerts:
+      style: column
+      tab: STAT
+      icon: mdi-bell-outline
+
+  # ── INFRA Tab ────────────────────────────────────────────────────
+  Databases:
+      style: column
+      tab: INFRA
+      icon: mdi-database
+  ⠀:
+      style: column
+      tab: INFRA
+  ⠀⠀:
+      style: column
+      tab: INFRA
+  ⠀⠀⠀:
+      style: column
+      tab: INFRA
+  ⠀⠀⠀⠀:
+      style: column
+      tab: INFRA
+  ⠀⠀⠀⠀⠀:
+      style: column
+      tab: INFRA
+  AnnoGrid Resources:
+      style: column
+      tab: INFRA
+      icon: mdi-home

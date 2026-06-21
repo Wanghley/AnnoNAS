@@ -1,131 +1,543 @@
-# ── Media ────────────────────────────────────────────────────────────────────
+########################################################################
+# HOME TAB
+# Row 1 (25% each): Media · Automation · AI · Personal
+# Row 2 (20% each): Management · Monitoring · _hidden0 · _hidden1
+########################################################################
+
 - Media:
     - Jellyfin:
         icon: jellyfin.png
-        href: http://anno-app-opi3bp-01.local:8096
-        description: Media server · anno-app
-        server: anno-app
+        href: http://anno-app-opi3b-01.local:8096
         container: annogrid-jellyfin
+        server: anno-app
+        description: Multimedia streaming library
         widget:
-          type: jellyfin
-          url: http://host.docker.internal:8096
-          key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
-          enableBlocks: true
-          enableNowPlaying: true
+            type: jellyfin
+            url: http://host.docker.internal:8096
+            key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
+            enableBlocks: true
+            enableNowPlaying: true
+            fields: ["movies", "series", "songs"]
 
-# ── Automation ───────────────────────────────────────────────────────────────
+########################################################################
 - Automation:
     - n8n:
         icon: n8n.png
-        href: http://anno-app-opi3bp-01.local:5678
-        description: Workflow automation · anno-app
-        server: anno-app
+        href: http://anno-app-opi3b-01.local:5678
         container: annogrid-n8n
+        server: anno-app
+        description: Workflow automation engine
 
-# ── AI ───────────────────────────────────────────────────────────────────────
+########################################################################
 - AI:
     - Open WebUI:
         icon: openwebui.png
         href: "http://anno-ai-jetson-orin-nano-01.local:{{HOMEPAGE_VAR_OPEN_WEBUI_PORT}}"
-        description: LLM chat interface · anno-ai
-        server: anno-ai
         container: open-webui
+        server: anno-ai
+        description: LLM chat interface
 
     - LiteLLM:
         icon: litellm.png
         href: "http://anno-ai-jetson-orin-nano-01.local:{{HOMEPAGE_VAR_LITELLM_PORT}}"
-        description: LLM proxy · anno-ai
-        server: anno-ai
         container: litellm-proxy
+        server: anno-ai
+        description: LLM proxy gateway
 
     - Homelable:
-        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/homepage.png
+        icon: mdi-home-automation
         href: http://anno-ai-jetson-orin-nano-01.local:3002
-        description: Homelab AI assistant · anno-ai
-        server: anno-ai
         container: frontend
+        server: anno-ai
+        description: AI homelab assistant
 
-# ── Personal ─────────────────────────────────────────────────────────────────
+########################################################################
 - Personal:
     - Monica:
         icon: monica.png
-        href: http://anno-app-opi3bp-01.local:8080
-        description: Personal CRM · anno-app
-        server: anno-app
+        href: http://anno-app-opi3b-01.local:8080
         container: annogrid-monica
+        server: anno-app
+        description: Personal relationship CRM
 
     - Twenty CRM:
         icon: twenty.png
-        href: http://anno-app-opi3bp-01.local:3000
-        description: CRM platform · anno-app
-        server: anno-app
+        href: http://anno-app-opi3b-01.local:3000
         container: twenty-server
+        server: anno-app
+        description: Open source CRM platform
 
-# ── Infrastructure ───────────────────────────────────────────────────────────
-- Infrastructure:
+########################################################################
+- Management:
     - Portainer:
         icon: portainer.png
-        href: https://anno-app-opi3bp-01.local:9443
-        description: Container management · anno-app
-        server: anno-app
+        href: https://anno-app-opi3b-01.local:9443
         container: portainer
+        server: anno-app
+        description: Docker container management
         widget:
-          type: portainer
-          url: https://host.docker.internal:9443
-          env: 1
-          key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            type: portainer
+            url: https://host.docker.internal:9443
+            env: 1
+            key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            fields: ["running", "stopped", "total"]
 
     - Dockpeek:
         icon: docker.png
-        href: http://anno-app-opi3bp-01.local:3420
-        description: Docker viewer · anno-app
-        server: anno-app
+        href: http://anno-app-opi3b-01.local:3420
         container: annogrid-dockpeek
+        server: anno-app
+        description: Container status viewer
 
-    - Cloudflared:
-        icon: cloudflare.png
-        href: https://dash.cloudflare.com
-        description: Tunnel · anno-gw
-        server: anno-gw
-        container: cloudflared
-
-# ── Monitoring ───────────────────────────────────────────────────────────────
+########################################################################
 - Monitoring:
     - Grafana:
         icon: grafana.png
         href: http://anno-ai-jetson-orin-nano-01.local:3001
-        description: Metrics dashboards · anno-ai
-        server: anno-ai
         container: grafana
+        server: anno-ai
+        description: Metrics and dashboards
         widget:
-          type: grafana
-          url: http://anno-ai-jetson-orin-nano-01.local:3001
-          username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
-          password: "{{HOMEPAGE_VAR_GRAFANA_PASS}}"
+            type: grafana
+            url: http://anno-ai-jetson-orin-nano-01.local:3001
+            username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
+            password: "{{HOMEPAGE_VAR_GRAFANA_PASS}}"
 
     - Prometheus:
         icon: prometheus.png
         href: http://anno-ai-jetson-orin-nano-01.local:9090
-        description: Metrics collection · anno-ai
-        server: anno-ai
         container: prometheus-hub
+        server: anno-ai
+        description: Metrics collection hub
         widget:
-          type: prometheus
-          url: http://anno-ai-jetson-orin-nano-01.local:9090
+            type: prometheus
+            url: http://anno-ai-jetson-orin-nano-01.local:9090
 
     - Alertmanager:
         icon: alertmanager.png
         href: http://anno-ai-jetson-orin-nano-01.local:9093
-        description: Alert routing · anno-ai
-        server: anno-ai
         container: alertmanager
+        server: anno-ai
+        description: Alert routing and silencing
 
     - Netdata:
         icon: netdata.png
-        href: http://anno-nas-rpi3bp-01.local:19999
-        description: Real-time stats · anno-nas
-        server: anno-nas
+        href: http://anno-nas-rpi3b-01.local:19999
         container: netdata
+        server: anno-nas
+        description: Real-time node monitoring
         widget:
-          type: netdata
-          url: http://anno-nas-rpi3bp-01.local:19999
+            type: netdata
+            url: http://anno-nas-rpi3b-01.local:19999
+
+########################################################################
+- _hidden0:
+    - anno-app:
+      - icon: mdi-server
+        href: http://anno-app-opi3b-01.local
+        description: ⠀
+    - anno-ai:
+      - icon: mdi-gpu
+        href: http://anno-ai-jetson-orin-nano-01.local
+        description: ⠀
+    - anno-nas:
+      - icon: mdi-harddisk
+        href: http://anno-nas-rpi3b-01.local
+        description: ⠀
+    - anno-gw:
+      - icon: mdi-router-network
+        href: http://anno-gw-mon-rpi3b-01.local
+        description: ⠀
+
+########################################################################
+- _hidden1:
+    - Cloudflare:
+      - icon: cloudflare.png
+        href: https://dash.cloudflare.com
+        description: ⠀
+    - Tailscale:
+      - icon: tailscale.png
+        href: https://login.tailscale.com
+        description: ⠀
+    - GitHub:
+      - icon: github.png
+        href: https://github.com/Wanghley/AnnoGrid
+        description: ⠀
+    - Portainer:
+      - icon: portainer.png
+        href: https://anno-app-opi3b-01.local:9443
+        description: ⠀
+
+
+########################################################################
+# STAT TAB
+# Row 1 (33% each): anno-app · anno-ai · anno-nas
+# Row 2 (33% each): anno-gw · Jellyfin Movies · Jellyfin Series
+# Row 3 (50% each): Cluster Containers · Cluster Health
+# Row 4 (100%):     System Alerts
+########################################################################
+
+- anno-app Stats:
+    - _hidden:
+        href: http://anno-app-opi3b-01.local
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 60000
+          display: grid
+          mappings:
+            - field:
+                anno_app:
+                  cpu
+              label: "CPU"
+              format: text
+            - field:
+                anno_app:
+                  ram
+              label: "RAM"
+              format: text
+            - field:
+                anno_app:
+                  disk
+              label: "Disk /"
+              format: text
+            - field:
+                anno_app:
+                  uptime
+              label: "Uptime"
+              format: text
+
+########################################################################
+- anno-ai Stats:
+    - _hidden:
+        href: http://anno-ai-jetson-orin-nano-01.local
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 60000
+          display: grid
+          mappings:
+            - field:
+                anno_ai:
+                  cpu
+              label: "CPU"
+              format: text
+            - field:
+                anno_ai:
+                  ram
+              label: "RAM"
+              format: text
+            - field:
+                anno_ai:
+                  disk
+              label: "Disk /"
+              format: text
+            - field:
+                anno_ai:
+                  uptime
+              label: "Uptime"
+              format: text
+
+########################################################################
+- anno-nas Stats:
+    - _hidden:
+        href: http://anno-nas-rpi3b-01.local
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 60000
+          display: grid
+          mappings:
+            - field:
+                anno_nas:
+                  storage_used
+              label: "Used"
+              format: text
+            - field:
+                anno_nas:
+                  storage_free
+              label: "Free"
+              format: text
+            - field:
+                anno_nas:
+                  disk_pct
+              label: "Usage"
+              format: text
+            - field:
+                anno_nas:
+                  uptime
+              label: "Uptime"
+              format: text
+
+########################################################################
+- anno-gw Stats:
+    - _hidden:
+        href: http://anno-gw-mon-rpi3b-01.local
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 60000
+          display: grid
+          mappings:
+            - field:
+                anno_gw:
+                  cpu
+              label: "CPU"
+              format: text
+            - field:
+                anno_gw:
+                  ram
+              label: "RAM"
+              format: text
+            - field:
+                anno_gw:
+                  disk
+              label: "Disk /"
+              format: text
+            - field:
+                anno_gw:
+                  uptime
+              label: "Uptime"
+              format: text
+
+########################################################################
+- Jellyfin Movies:
+   - _hidden:
+       href: http://anno-app-opi3b-01.local:8096
+       widget:
+         type: customapi
+         url: http://host.docker.internal:3033/static/stats.json
+         refreshInterval: 300000
+         display: grid
+         mappings:
+           - field:
+               jellyfin:
+                 movies:
+                   count
+             label: "Movies"
+             format: number
+           - field:
+               jellyfin:
+                 movies:
+                   storage
+             label: "Storage"
+             format: text
+           - field:
+               jellyfin:
+                 movies:
+                   plays
+             label: "Total Plays"
+             format: number
+           - field:
+               jellyfin:
+                 movies:
+                   runtime
+             label: "Runtime"
+             format: text
+
+########################################################################
+- Jellyfin Series:
+   - _hidden:
+       href: http://anno-app-opi3b-01.local:8096
+       widget:
+         type: customapi
+         url: http://host.docker.internal:3033/static/stats.json
+         refreshInterval: 300000
+         display: grid
+         mappings:
+           - field:
+               jellyfin:
+                 series:
+                   episodes
+             label: "Episodes"
+             format: number
+           - field:
+               jellyfin:
+                 series:
+                   storage
+             label: "Storage"
+             format: text
+           - field:
+               jellyfin:
+                 series:
+                   plays
+             label: "Total Plays"
+             format: number
+           - field:
+               jellyfin:
+                 series:
+                   runtime
+             label: "Runtime"
+             format: text
+
+########################################################################
+- Cluster Containers:
+    - _hidden:
+        href: https://anno-app-opi3b-01.local:9443
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 30000
+          display: grid
+          mappings:
+            - field:
+                cluster:
+                  running
+              label: "Running"
+              format: number
+            - field:
+                cluster:
+                  stopped
+              label: "Stopped"
+              format: number
+            - field:
+                cluster:
+                  total
+              label: "Total"
+              format: number
+            - field:
+                cluster:
+                  hosts
+              label: "Hosts"
+              format: number
+
+########################################################################
+- Cluster Health:
+    - _hidden:
+        href: https://anno-app-opi3b-01.local:9443
+        widget:
+          type: customapi
+          url: http://host.docker.internal:3033/static/stats.json
+          refreshInterval: 30000
+          display: list
+          mappings:
+            - field:
+                anno_app:
+                  containers_up
+              label: "anno-app"
+              format: text
+              additionalField:
+                field:
+                  anno_app:
+                    containers_down
+                format: text
+                prefix: " running / "
+                suffix: " stopped"
+            - field:
+                anno_ai:
+                  containers_up
+              label: "anno-ai"
+              format: text
+              additionalField:
+                field:
+                  anno_ai:
+                    containers_down
+                format: text
+                prefix: " running / "
+                suffix: " stopped"
+            - field:
+                anno_nas:
+                  containers_up
+              label: "anno-nas"
+              format: text
+              additionalField:
+                field:
+                  anno_nas:
+                    containers_down
+                format: text
+                prefix: " running / "
+                suffix: " stopped"
+            - field:
+                anno_gw:
+                  containers_up
+              label: "anno-gw"
+              format: text
+              additionalField:
+                field:
+                  anno_gw:
+                    containers_down
+                format: text
+                prefix: " running / "
+                suffix: " stopped"
+
+########################################################################
+- System Alerts:
+    - ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ Prometheus · Active Alerts ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀:
+        href: http://anno-ai-jetson-orin-nano-01.local:9090/alerts
+        widget:
+          type: prometheus
+          url: http://anno-ai-jetson-orin-nano-01.local:9090
+
+
+########################################################################
+# INFRA TAB
+# Row 1 (16.67% each): PostgreSQL · MariaDB · Redis · Prometheus · cAdvisor · Grafana
+# Row 2 (100%):        AnnoGrid Resources
+########################################################################
+
+- Databases:
+    - PostgreSQL:
+        icon: postgresql.png
+        container: annogrid-postgres
+        server: anno-app
+        description: Primary SQL database
+
+########################################################################
+- ⠀:
+    - MariaDB:
+        icon: mariadb.png
+        container: annogrid-mariadb
+        server: anno-app
+        description: Relational database
+
+########################################################################
+- ⠀⠀:
+    - Redis:
+        icon: redis.png
+        container: annogrid-redis
+        server: anno-app
+        description: In-memory cache store
+
+########################################################################
+- ⠀⠀⠀:
+    - Prometheus:
+        icon: prometheus.png
+        container: prometheus-hub
+        server: anno-ai
+        description: Metrics & alerting engine
+
+########################################################################
+- ⠀⠀⠀⠀:
+    - cAdvisor:
+        icon: mdi-docker
+        container: annogrid-cadvisor
+        server: anno-app
+        description: Container resource metrics
+
+########################################################################
+- ⠀⠀⠀⠀⠀:
+    - Grafana:
+        icon: grafana.png
+        container: grafana
+        server: anno-ai
+        description: Metrics visualisation
+
+########################################################################
+- AnnoGrid Resources:
+    - Homepage Docs:
+        icon: mdi-book-open-outline
+        href: https://gethomepage.dev/
+        description: Homepage configuration documentation
+    - AnnoGrid GitHub:
+        icon: github.png
+        href: https://github.com/Wanghley/AnnoGrid
+        description: Cluster infrastructure repository
+    - Prometheus Docs:
+        icon: prometheus.png
+        href: https://prometheus.io/docs/
+        description: Metrics and alerting reference
+    - Grafana Docs:
+        icon: grafana.png
+        href: https://grafana.com/docs/
+        description: Dashboard and panel documentation
+########################################################################

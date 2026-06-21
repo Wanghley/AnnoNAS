@@ -1,0 +1,55 @@
+{
+  "anno_app": {
+    "cpu": "– %",
+    "ram": "– / – GB",
+    "disk": "– / – GB",
+    "uptime": "–",
+    "containers_up": "–",
+    "containers_down": "–"
+  },
+  "anno_ai": {
+    "cpu": "– %",
+    "ram": "– / – GB",
+    "disk": "– / – GB",
+    "uptime": "–",
+    "containers_up": "–",
+    "containers_down": "–"
+  },
+  "anno_nas": {
+    "storage_used": "–",
+    "storage_free": "–",
+    "disk_pct": "– %",
+    "uptime": "–",
+    "containers_up": "–",
+    "containers_down": "–"
+  },
+  "anno_gw": {
+    "cpu": "– %",
+    "ram": "– / – MB",
+    "disk": "– / – GB",
+    "uptime": "–",
+    "containers_up": "–",
+    "containers_down": "–"
+  },
+  "jellyfin": {
+    "movies": {
+      "count": 0,
+      "storage": "–",
+      "plays": 0,
+      "runtime": "–"
+    },
+    "series": {
+      "episodes": 0,
+      "storage": "–",
+      "plays": 0,
+      "runtime": "–"
+    }
+  },
+  "cluster": {
+    "running": 0,
+    "stopped": 0,
+    "total": 0,
+    "hosts": 4
+  },
+  "timestamp": 0
+}
