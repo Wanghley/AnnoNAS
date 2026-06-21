@@ -5,18 +5,74 @@
     text_size: 4xl
     text: AnnoGrid
 
-- resources:
-    expanded: false
-    cpu: true
-    memory: true
-    refresh: 2000
+- greeting:
+    text_size: 4xl
+    text: —
+
+# ── Cluster health — all 4 nodes at a glance ─────────
+- customapi:
+    url: http://host.docker.internal:3033/static/stats.json
+    refreshInterval: 30000
+    display: list
+    mappings:
+      - field:
+          anno_app:
+            cpu
+        label: "APP  cpu"
+        format: text
+        additionalField:
+          field:
+            anno_app:
+              ram
+          format: text
+          prefix: "  ·  ram "
+      - field:
+          anno_ai:
+            cpu
+        label: "AI   cpu"
+        format: text
+        additionalField:
+          field:
+            anno_ai:
+              ram
+          format: text
+          prefix: "  ·  ram "
+      - field:
+          anno_gw:
+            cpu
+        label: "GW   cpu"
+        format: text
+        additionalField:
+          field:
+            anno_gw:
+              ram
+          format: text
+          prefix: "  ·  ram "
+      - field:
+          anno_nas:
+            disk_pct
+        label: "NAS  disk"
+        format: text
+        additionalField:
+          field:
+            anno_nas:
+              storage_used
+          format: text
+          prefix: "  ·  used "
 
 - greeting:
     text_size: 4xl
     text: —
 
+# ── Local host (anno-app) detail ──────────────────────
 - resources:
-    label: ROOT
+    expanded: false
+    cpu: true
+    memory: true
+    refresh: 3000
+
+- resources:
+    label: DISK
     expanded: true
     disk:
       - /
