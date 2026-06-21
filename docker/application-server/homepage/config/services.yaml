@@ -8,7 +8,7 @@
         container: annogrid-jellyfin
         widget:
           type: jellyfin
-          url: http://annogrid-jellyfin:8096
+          url: http://host.docker.internal:8096
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           enableBlocks: true
           enableNowPlaying: true
@@ -71,7 +71,7 @@
         container: portainer
         widget:
           type: portainer
-          url: https://anno-app-opi3bp-01.local:9443
+          url: https://host.docker.internal:9443
           env: 1
           key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
 

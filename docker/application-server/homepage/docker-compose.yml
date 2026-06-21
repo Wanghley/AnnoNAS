@@ -1,9 +1,5 @@
 name: homepage
 
-networks:
-  annogrid:
-    external: true
-
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -24,5 +20,5 @@ services:
       - ./config:/app/config
     ports:
       - "3033:3000"
-    networks:
-      - annogrid
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
