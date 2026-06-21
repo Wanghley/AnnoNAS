@@ -2,7 +2,6 @@ name: node-monitoring
 
 services:
 
-  # Hardware Metrics for Prometheus
   docker-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: docker-proxy
@@ -35,8 +34,14 @@ services:
       - '--web.listen-address=0.0.0.0:9100'
       - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/containerd/.+)($$|/)'
       - '--collector.netdev.device-exclude=^(lo|docker[0-9]+|br-.+|veth.+)$$'
+    labels:
+      homepage.group: anno-nas
+      homepage.name: Node Exporter
+      homepage.icon: mdi-server-network
+      homepage.description: Host metrics exporter
+      homepage.server: anno-nas
+      homepage.container: node-exporter
 
-  # Container Metrics for Prometheus
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -49,8 +54,15 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     privileged: true
+    labels:
+      homepage.group: anno-nas
+      homepage.name: cAdvisor
+      homepage.icon: mdi-docker
+      homepage.href: "http://100.114.225.52:8080"
+      homepage.description: Container metrics
+      homepage.server: anno-nas
+      homepage.container: cadvisor
 
-  # Real-time Per-Second Telemetry
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
@@ -67,8 +79,15 @@ services:
       - /sys:/host/sys:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      homepage.group: anno-nas
+      homepage.name: Netdata
+      homepage.icon: netdata.png
+      homepage.href: "http://100.114.225.52:19999"
+      homepage.description: Real-time system monitoring
+      homepage.server: anno-nas
+      homepage.container: netdata
 
-  # Log Shipper for Loki
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
@@ -84,6 +103,13 @@ services:
       - -config.file=/etc/promtail/config.yml
       - -config.expand-env=true
       - -client.external-labels=host=${NODE_NAME}
+    labels:
+      homepage.group: anno-nas
+      homepage.name: Promtail
+      homepage.icon: grafana.png
+      homepage.description: Log shipping agent
+      homepage.server: anno-nas
+      homepage.container: promtail
 
 volumes:
   netdatalib:
