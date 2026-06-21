@@ -78,7 +78,7 @@
         widget:
             type: portainer
             url: https://host.docker.internal:9443
-            env: 2
+            env: 3
             key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
             fields: ["running", "stopped", "total"]
 
@@ -567,7 +567,7 @@
         widget:
             type: portainer
             url: https://host.docker.internal:9443
-            env: 2
+            env: 3
             key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
             fields: ["running", "stopped", "total"]
     - Dockpeek:
@@ -615,6 +615,16 @@
         container: alertmanager
         server: anno-ai
         description: Alert routing & silencing
+    - Portainer:
+        icon: portainer.png
+        href: "{{HOMEPAGE_VAR_PORTAINER_URL}}"
+        description: Containers on anno-ai
+        widget:
+            type: portainer
+            url: https://host.docker.internal:9443
+            env: 4
+            key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            fields: ["running", "stopped", "total"]
 
 ########################################################################
 - GW Node:
@@ -622,6 +632,16 @@
         icon: mdi-server-cog
         href: "https://100.101.178.87:9090"
         description: System management · anno-gw
+    - Portainer:
+        icon: portainer.png
+        href: "{{HOMEPAGE_VAR_PORTAINER_URL}}"
+        description: Containers on anno-gw
+        widget:
+            type: portainer
+            url: https://host.docker.internal:9443
+            env: 5
+            key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            fields: ["running", "stopped", "total"]
     - Cloudflared:
         icon: cloudflare.png
         href: "https://dash.cloudflare.com"
@@ -641,9 +661,19 @@
         icon: mdi-server-cog
         href: "https://100.114.225.52:9090"
         description: System management · anno-nas
+    - Portainer:
+        icon: portainer.png
+        href: "{{HOMEPAGE_VAR_PORTAINER_URL}}"
+        description: Containers on anno-nas
+        widget:
+            type: portainer
+            url: https://host.docker.internal:9443
+            env: 6
+            key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            fields: ["running", "stopped", "total"]
     - Netdata:
         icon: netdata.png
-        href: "http://100.114.225.52:19999"
+        href: "{{HOMEPAGE_VAR_NETDATA_URL}}"
         container: netdata
         server: anno-nas
         description: Real-time system monitoring
