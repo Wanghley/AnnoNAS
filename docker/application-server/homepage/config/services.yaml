@@ -78,7 +78,7 @@
         widget:
             type: portainer
             url: https://host.docker.internal:9443
-            env: 1
+            env: 2
             key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
             fields: ["running", "stopped", "total"]
 
@@ -567,7 +567,7 @@
         widget:
             type: portainer
             url: https://host.docker.internal:9443
-            env: 1
+            env: 2
             key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
             fields: ["running", "stopped", "total"]
     - Dockpeek:
