@@ -9,7 +9,7 @@ services:
       - portainer_data:/data
     ports:
       - "0.0.0.0:9443:9443"
-      - "0.0.0.0:9000:9000"
+      - "0.0.0.0:9002:9000"
       - "0.0.0.0:8000:8000"
     deploy:
       resources:
