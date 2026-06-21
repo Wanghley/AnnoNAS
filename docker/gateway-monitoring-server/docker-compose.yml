@@ -16,6 +16,13 @@ services:
       - '--path.rootfs=/host'
       - '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker|run/docker)($$|/)'
       - '--web.listen-address=0.0.0.0:9100'
+    labels:
+      homepage.group: anno-gw
+      homepage.name: Node Exporter
+      homepage.icon: mdi-server-network
+      homepage.description: Host metrics exporter
+      homepage.server: anno-gw
+      homepage.container: node-exporter
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -29,6 +36,14 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     privileged: true
+    labels:
+      homepage.group: anno-gw
+      homepage.name: cAdvisor
+      homepage.icon: mdi-docker
+      homepage.href: "http://100.101.178.87:8080"
+      homepage.description: Container metrics
+      homepage.server: anno-gw
+      homepage.container: cadvisor
 
   promtail:
     image: grafana/promtail:latest
@@ -44,6 +59,13 @@ services:
     command:
       - -config.file=/etc/promtail/config.yml
       - -config.expand-env=true
+    labels:
+      homepage.group: anno-gw
+      homepage.name: Promtail
+      homepage.icon: grafana.png
+      homepage.description: Log shipping agent
+      homepage.server: anno-gw
+      homepage.container: promtail
 
   docker-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
@@ -68,5 +90,13 @@ services:
     restart: always
     env_file: .env
     command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    labels:
+      homepage.group: anno-gw
+      homepage.name: Cloudflared
+      homepage.icon: cloudflare.png
+      homepage.href: "https://dash.cloudflare.com"
+      homepage.description: Cloudflare tunnel
+      homepage.server: anno-gw
+      homepage.container: cloudflared
 
 volumes: {}
