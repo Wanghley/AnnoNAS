@@ -4,15 +4,15 @@
     "ram": "1.8 GB / 7.5 GB",
     "disk": "63.8 GB / 232.3 GB",
     "uptime": "0d 10h",
-    "containers_up": "",
-    "containers_down": ""
+    "containers_up": "0",
+    "containers_down": "0"
   },
   "anno_ai": {
     "cpu": "55.6%",
     "ram": "3.5 GB / 7.4 GB",
     "disk": "188.9 GB / 232.2 GB",
     "uptime": "0d 19h",
-    "containers_up": "88",
+    "containers_up": "0",
     "containers_down": "0"
   },
   "anno_nas": {
@@ -20,7 +20,7 @@
     "storage_free": "11.05 GB",
     "disk_pct": "61.2%",
     "uptime": "0d 19h",
-    "containers_up": "73",
+    "containers_up": "0",
     "containers_down": "0"
   },
   "anno_gw": {
@@ -28,27 +28,17 @@
     "ram": "0.7 GB / 0.9 GB",
     "disk": "10.9 GB / 13.8 GB",
     "uptime": "0d 19h",
-    "containers_up": "61",
+    "containers_up": "0",
     "containers_down": "0"
   },
   "jellyfin": {
-    "movies": {
-      "count": 0,
-      "storage": "0.00 GB",
-      "plays": ,
-      "runtime": "0 h"
-    },
-    "series": {
-      "episodes": 0,
-      "storage": "0.00 GB",
-      "plays": ,
-      "runtime": "0 h"
-    }
+    "movies":  {"count": 0, "storage": "0.0 GB", "plays": 0, "runtime": "—"},
+    "series":  {"episodes": 0, "storage": "0.0 GB", "plays": 0, "runtime": "—"}
   },
   "cluster": {
-    "running": 222,
+    "running": 0,
     "stopped": 0,
-    "total": 222,
+    "total": 0,
     "hosts": 4
   },
   "timestamp": 1782008871000

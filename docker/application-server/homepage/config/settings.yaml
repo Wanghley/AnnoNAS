@@ -45,6 +45,24 @@ layout:
       style: column
       tab: HOME
 
+  # ── NODES Tab — per-host management: Cockpit + key tools ─────────
+  App Node:
+      style: column
+      tab: NODES
+      icon: mdi-server
+  AI Node:
+      style: column
+      tab: NODES
+      icon: mdi-gpu
+  GW Node:
+      style: column
+      tab: NODES
+      icon: mdi-router-network
+  NAS Node:
+      style: column
+      tab: NODES
+      icon: mdi-harddisk
+
   # ── STAT Tab ─────────────────────────────────────────────────────
   anno-app Stats:
       style: column
@@ -83,6 +101,24 @@ layout:
       tab: STAT
       icon: mdi-bell-outline
 
+  # ── LIVE Tab — auto-discovered per host via Docker labels ─────────
+  anno-app:
+      style: column
+      tab: LIVE
+      icon: mdi-server
+  anno-ai:
+      style: column
+      tab: LIVE
+      icon: mdi-gpu
+  anno-gw:
+      style: column
+      tab: LIVE
+      icon: mdi-router-network
+  anno-nas:
+      style: column
+      tab: LIVE
+      icon: mdi-harddisk
+
   # ── INFRA Tab ────────────────────────────────────────────────────
   Databases:
       style: column
@@ -107,39 +143,3 @@ layout:
       style: column
       tab: INFRA
       icon: mdi-home
-
-  # ── NODES Tab — per-host management: Cockpit + key tools ────────────────
-  App Node:
-      style: column
-      tab: NODES
-      icon: mdi-server
-  AI Node:
-      style: column
-      tab: NODES
-      icon: mdi-gpu
-  GW Node:
-      style: column
-      tab: NODES
-      icon: mdi-router-network
-  NAS Node:
-      style: column
-      tab: NODES
-      icon: mdi-harddisk
-
-  # ── LIVE Tab — auto-discovered per host via Docker labels ─────────────────
-  anno-app:
-      style: column
-      tab: LIVE
-      icon: mdi-server
-  anno-ai:
-      style: column
-      tab: LIVE
-      icon: mdi-gpu
-  anno-gw:
-      style: column
-      tab: LIVE
-      icon: mdi-router-network
-  anno-nas:
-      style: column
-      tab: LIVE
-      icon: mdi-harddisk
