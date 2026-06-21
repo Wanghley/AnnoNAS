@@ -107,3 +107,21 @@ layout:
       style: column
       tab: INFRA
       icon: mdi-home
+
+  # ── LIVE Tab — auto-discovered per host via Docker labels ─────────────────
+  anno-app:
+      style: column
+      tab: LIVE
+      icon: mdi-server
+  anno-ai:
+      style: column
+      tab: LIVE
+      icon: mdi-gpu
+  anno-gw:
+      style: column
+      tab: LIVE
+      icon: mdi-router-network
+  anno-nas:
+      style: column
+      tab: LIVE
+      icon: mdi-harddisk
