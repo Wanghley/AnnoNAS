@@ -26,10 +26,10 @@ scrape_configs:
 
   - job_name: 'app-server'
     static_configs:
-      - targets: ['100.123.183.36:9100']
+      - targets: ['100.67.194.10:9100']
         labels:
           nodename: anno-app-opi3b-01
-      - targets: ['100.123.183.36:8080']
+      - targets: ['100.67.194.10:8080']
         labels:
           nodename: anno-app-opi3b-01
 

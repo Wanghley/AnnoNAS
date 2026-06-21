@@ -22,7 +22,7 @@
 hosts:
   anno-app-opi3b-01:
     user: orangepi
-    ip: 100.123.183.36
+    ip: 100.67.194.10
     arc_role: opi3b
     display: OPi3B
 
