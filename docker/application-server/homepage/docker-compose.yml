@@ -15,6 +15,7 @@ services:
       HOMEPAGE_VAR_GRAFANA_PASS: ${HOMEPAGE_VAR_GRAFANA_PASS}
       HOMEPAGE_VAR_LITELLM_PORT: ${HOMEPAGE_VAR_LITELLM_PORT}
       HOMEPAGE_VAR_OPEN_WEBUI_PORT: ${HOMEPAGE_VAR_OPEN_WEBUI_PORT}
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS:-*}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config:/app/config
