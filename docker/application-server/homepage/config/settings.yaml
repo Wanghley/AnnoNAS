@@ -108,6 +108,24 @@ layout:
       tab: INFRA
       icon: mdi-home
 
+  # ── NODES Tab — per-host management: Cockpit + key tools ────────────────
+  App Node:
+      style: column
+      tab: NODES
+      icon: mdi-server
+  AI Node:
+      style: column
+      tab: NODES
+      icon: mdi-gpu
+  GW Node:
+      style: column
+      tab: NODES
+      icon: mdi-router-network
+  NAS Node:
+      style: column
+      tab: NODES
+      icon: mdi-harddisk
+
   # ── LIVE Tab — auto-discovered per host via Docker labels ─────────────────
   anno-app:
       style: column

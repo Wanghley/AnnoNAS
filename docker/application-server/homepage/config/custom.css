@@ -261,9 +261,11 @@ button[id$='-tab']:hover {
 }
 
 /*==================================
-  LAYOUT — LIVE TAB
+  LAYOUT — NODES + LIVE TABS
   4 equal columns (one per host), all rows visible
+  NODES = management view   LIVE = raw container discovery
 ==================================*/
+:is([id="inner_wrapper"]:has(#tabs [aria-selected="true"][id="NODES-tab"])) #layout-groups,
 :is([id="inner_wrapper"]:has(#tabs [aria-selected="true"][id="LIVE-tab"])) #layout-groups {
   --gap: var(--spacing-md);
   --cols-4: calc(25% - (var(--gap) * 3 / 4));
@@ -274,6 +276,7 @@ button[id$='-tab']:hover {
   gap: var(--gap) !important;
 }
 
+:is([id="inner_wrapper"]:has(#tabs [aria-selected="true"][id="NODES-tab"])) #layout-groups > .services-group,
 :is([id="inner_wrapper"]:has(#tabs [aria-selected="true"][id="LIVE-tab"])) #layout-groups > .services-group {
   flex: 1 1 var(--cols-4) !important;
   max-width: var(--cols-4) !important;
