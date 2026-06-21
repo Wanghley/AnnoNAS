@@ -1,19 +1,19 @@
 - _hidden0:
-    - anno-app (OrangePi 3B+):
-      - icon: mdi-server
-        href: http://anno-app-opi3b-01.local
+    - anno-app Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.67.194.10:9090"
         description: ⠀
-    - anno-ai (Jetson Orin Nano):
-      - icon: mdi-gpu
-        href: http://anno-ai-jetson-orin-nano-01.local
+    - anno-ai Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.85.193.50:9090"
         description: ⠀
-    - anno-nas (Raspberry Pi 3B+):
-      - icon: mdi-harddisk
-        href: http://anno-nas-rpi3b-01.local
+    - anno-nas Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.114.225.52:9090"
         description: ⠀
-    - anno-gw (Raspberry Pi 3B+):
-      - icon: mdi-router-network
-        href: http://anno-gw-mon-rpi3b-01.local
+    - anno-gw Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.101.178.87:9090"
         description: ⠀
 
 - _hidden1:

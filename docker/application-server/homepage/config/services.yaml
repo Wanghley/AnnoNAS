@@ -131,25 +131,27 @@
             url: http://100.114.225.52:19999
 
 ########################################################################
+# Quick-access panel 1: Cockpit for every node
 - _hidden0:
-    - anno-app:
-      - icon: mdi-server
-        href: http://anno-app-opi3b-01.local
+    - anno-app Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.67.194.10:9090"
         description: ⠀
-    - anno-ai:
-      - icon: mdi-gpu
-        href: http://100.85.193.50
+    - anno-ai Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.85.193.50:9090"
         description: ⠀
-    - anno-nas:
-      - icon: mdi-harddisk
-        href: http://100.114.225.52
+    - anno-nas Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.114.225.52:9090"
         description: ⠀
-    - anno-gw:
-      - icon: mdi-router-network
-        href: http://100.101.178.87
+    - anno-gw Cockpit:
+      - icon: mdi-server-cog
+        href: "https://100.101.178.87:9090"
         description: ⠀
 
 ########################################################################
+# Quick-access panel 2: external services
 - _hidden1:
     - Cloudflare:
       - icon: cloudflare.png
@@ -165,7 +167,7 @@
         description: ⠀
     - Portainer:
       - icon: portainer.png
-        href: https://anno-app-opi3b-01.local:9443
+        href: "https://100.67.194.10:9443"
         description: ⠀
 
 
@@ -540,4 +542,118 @@
         icon: grafana.png
         href: https://grafana.com/docs/
         description: Dashboard and panel documentation
+########################################################################
+
+
+########################################################################
+# NODES TAB
+# 4 equal columns — one per host — Cockpit + node-specific management
+# Cockpit default port: 9090 (HTTPS, self-signed cert — accept on first visit)
+# NOTE: anno-ai runs Prometheus on 9090 too; if there is a port conflict,
+#       change Cockpit's port with: systemctl edit cockpit.socket
+########################################################################
+
+- App Node:
+    - Cockpit:
+        icon: mdi-server-cog
+        href: "https://100.67.194.10:9090"
+        description: System management · anno-app
+    - Portainer:
+        icon: portainer.png
+        href: "https://100.67.194.10:9443"
+        container: portainer
+        server: anno-app
+        description: Container management
+        widget:
+            type: portainer
+            url: https://host.docker.internal:9443
+            env: 1
+            key: "{{HOMEPAGE_VAR_PORTAINER_KEY}}"
+            fields: ["running", "stopped", "total"]
+    - Dockpeek:
+        icon: docker.png
+        href: "http://100.67.194.10:3420"
+        container: annogrid-dockpeek
+        server: anno-app
+        description: Container status viewer
+    - cAdvisor:
+        icon: mdi-docker
+        href: "http://100.67.194.10:8082"
+        container: annogrid-cadvisor
+        server: anno-app
+        description: Container resource metrics
+
+########################################################################
+- AI Node:
+    - Cockpit:
+        icon: mdi-server-cog
+        href: "https://100.85.193.50:9090"
+        description: System management · anno-ai
+    - Grafana:
+        icon: grafana.png
+        href: "http://100.85.193.50:3001"
+        container: grafana
+        server: anno-ai
+        description: Metrics & dashboards
+        widget:
+            type: grafana
+            url: http://100.85.193.50:3001
+            username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
+            password: "{{HOMEPAGE_VAR_GRAFANA_PASS}}"
+    - Prometheus:
+        icon: prometheus.png
+        href: "http://100.85.193.50:9090"
+        container: prometheus-hub
+        server: anno-ai
+        description: Metrics collection hub
+        widget:
+            type: prometheus
+            url: http://100.85.193.50:9090
+    - Alertmanager:
+        icon: alertmanager.png
+        href: "http://100.85.193.50:9093"
+        container: alertmanager
+        server: anno-ai
+        description: Alert routing & silencing
+
+########################################################################
+- GW Node:
+    - Cockpit:
+        icon: mdi-server-cog
+        href: "https://100.101.178.87:9090"
+        description: System management · anno-gw
+    - Cloudflared:
+        icon: cloudflare.png
+        href: "https://dash.cloudflare.com"
+        container: cloudflared
+        server: anno-gw
+        description: Cloudflare tunnel status
+    - cAdvisor:
+        icon: mdi-docker
+        href: "http://100.101.178.87:8080"
+        container: cadvisor
+        server: anno-gw
+        description: Container resource metrics
+
+########################################################################
+- NAS Node:
+    - Cockpit:
+        icon: mdi-server-cog
+        href: "https://100.114.225.52:9090"
+        description: System management · anno-nas
+    - Netdata:
+        icon: netdata.png
+        href: "http://100.114.225.52:19999"
+        container: netdata
+        server: anno-nas
+        description: Real-time system monitoring
+        widget:
+            type: netdata
+            url: http://100.114.225.52:19999
+    - cAdvisor:
+        icon: mdi-docker
+        href: "http://100.114.225.52:8080"
+        container: cadvisor
+        server: anno-nas
+        description: Container resource metrics
 ########################################################################
