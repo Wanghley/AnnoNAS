@@ -20,6 +20,14 @@ services:
       timeout: 10s
       retries: 5
       start_period: 60s
+    labels:
+      homepage.group: anno-ai
+      homepage.name: LiteLLM
+      homepage.icon: litellm.png
+      homepage.href: "http://100.85.193.50:${LITELLM_PORT}"
+      homepage.description: LLM proxy gateway
+      homepage.server: anno-ai
+      homepage.container: litellm-proxy
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -40,3 +48,11 @@ services:
     depends_on:
       litellm:
         condition: service_healthy
+    labels:
+      homepage.group: anno-ai
+      homepage.name: Open WebUI
+      homepage.icon: openwebui.png
+      homepage.href: "http://100.85.193.50:${OPEN_WEBUI_PORT}"
+      homepage.description: LLM chat interface
+      homepage.server: anno-ai
+      homepage.container: open-webui
