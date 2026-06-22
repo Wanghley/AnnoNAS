@@ -1,45 +1,17 @@
 {
-  "anno_app": {
-    "cpu": "31.4%",
-    "ram": "1.8 GB / 7.5 GB",
-    "disk": "63.8 GB / 232.3 GB",
-    "uptime": "0d 10h",
-    "containers_up": "0",
-    "containers_down": "0"
-  },
-  "anno_ai": {
-    "cpu": "55.6%",
-    "ram": "3.5 GB / 7.4 GB",
-    "disk": "188.9 GB / 232.2 GB",
-    "uptime": "0d 19h",
-    "containers_up": "0",
-    "containers_down": "0"
-  },
-  "anno_nas": {
-    "storage_used": "17.47 GB",
-    "storage_free": "11.05 GB",
-    "disk_pct": "61.2%",
-    "uptime": "0d 19h",
-    "containers_up": "0",
-    "containers_down": "0"
-  },
-  "anno_gw": {
-    "cpu": "24.7%",
-    "ram": "0.7 GB / 0.9 GB",
-    "disk": "10.9 GB / 13.8 GB",
-    "uptime": "0d 19h",
-    "containers_up": "0",
-    "containers_down": "0"
-  },
+  "anno_app": {"cpu":"29.1%","ram":"2.0 GB / 7.5 GB","disk":"20.8 GB / 232.3 GB","uptime":"1d 4h", "containers_up": "14", "containers_down": "0"},
+  "anno_ai": {"cpu":"54.8%","ram":"3.2 GB / 7.4 GB","disk":"189.2 GB / 232.2 GB","uptime":"0d 12h",  "containers_up": "18",  "containers_down": "6"},
+  "anno_nas": {"cpu":"57.4%","ram":"609 MB / 905 MB","disk":"17.4 GB / 28.5 GB","uptime":"0d 12h", "storage_used": "17.4 GB", "storage_free": "11.1 GB", "disk_pct": "61.1%", "containers_up": "6", "containers_down": "0"},
+  "anno_gw": {"cpu":"17.8%","ram":"465 MB / 906 MB","disk":"7.8 GB / 13.8 GB","uptime":"0d 6h",  "containers_up": "6",  "containers_down": "0"},
   "jellyfin": {
-    "movies":  {"count": 0, "storage": "0.0 GB", "plays": 0, "runtime": "—"},
-    "series":  {"episodes": 0, "storage": "0.0 GB", "plays": 0, "runtime": "—"}
+    "movies":  {"count": 0, "storage": "0 MB", "plays": 0, "runtime": "—"},
+    "series":  {"episodes": 0, "storage": "0 MB",   "plays": 0, "runtime": "—"}
   },
   "cluster": {
-    "running": 0,
-    "stopped": 0,
-    "total": 0,
-    "hosts": 4
+    "running": 44,
+    "stopped": 6,
+    "total":   50,
+    "hosts":   4
   },
-  "timestamp": 1782008871000
+  "timestamp": 1782072168000
 }
