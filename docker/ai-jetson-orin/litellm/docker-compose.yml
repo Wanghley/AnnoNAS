@@ -9,6 +9,9 @@ services:
     environment:
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       - LITELLM_LOG=WARNING
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - LITELLM_MAX_BUDGET=${LITELLM_MAX_BUDGET:-20}
     volumes:
       - ./config.yaml:/app/config.yaml
     extra_hosts:
