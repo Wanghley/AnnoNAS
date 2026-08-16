@@ -1,37 +1,128 @@
 name: twenty
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Twenty CRM — Server + Worker only.
+# Postgres and Redis live in the 'core-data' stack on the shared
+# core-data_default bridge network; no local DB/cache containers here.
+# Image source: https://hub.docker.com/r/twentycrm/twenty  (arm64 ✓)
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
-  twenty:
+
+  # ── API Server + Frontend SPA ──────────────────────────────────────────────
+  twenty-server:
     image: twentycrm/twenty:latest
-    container_name: twenty_crm
-    ports:
-      - "${PORT}:${PORT}"
-    environment:
-      # Database Connection
-      - PG_DATABASE_HOST=${PG_DATABASE_HOST}
-      - PG_DATABASE_PORT=${PG_DATABASE_PORT}
-      - PG_DATABASE_NAME=${PG_DATABASE_NAME}
-      - PG_DATABASE_USER=${PG_DATABASE_USER}
-      - PG_DATABASE_PASSWORD=${PG_DATABASE_PASSWORD}
-      
-      # App Routing
-      - SERVER_URL=http://${ORANGE_PI_IP}:${PORT}
-      - PORT=${PORT}
-      
-      # Core Engine Config
-      - APP_SECRET=${APP_SECRET}
-      - NODE_ENV=production
+    platform: linux/arm64
+    container_name: twenty_server
     restart: unless-stopped
-    labels:
-      homepage.group: anno-app
-      homepage.name: Twenty CRM
-      homepage.icon: twenty.png
-      homepage.href: "http://100.67.194.10:${PORT}"
-      homepage.description: Open-source CRM
-      homepage.server: anno-app
-      homepage.container: twenty_crm
+    env_file: .env
+    ports:
+      - "${NODE_PORT:-3000}:3000"
+    environment:
+      NODE_ENV:   production
+      NODE_PORT:  "3000"
+
+      # Public URL — must match what the browser resolves (Tailscale IP/port)
+      SERVER_URL: ${SERVER_URL}
+
+      # Data layer (resolved by container name on core-data_default network)
+      PG_DATABASE_URL: ${PG_DATABASE_URL}
+      REDIS_URL:       ${REDIS_URL}
+
+      # Security — 32 char+ secret for JWT signing and field encryption
+      APP_SECRET:      ${APP_SECRET}
+
+      # Storage — local volume; swap STORAGE_TYPE=s3 later if you wire MinIO
+      STORAGE_TYPE:       local
+      STORAGE_LOCAL_PATH: /app/packages/twenty-server/.local-storage
+
+      # Migrations: leave DISABLE_DB_MIGRATIONS blank → server WILL migrate on boot
+      # The worker explicitly disables this below to avoid a race condition
+      DISABLE_DB_MIGRATIONS:          ""
+      DISABLE_CRON_JOBS_REGISTRATION: ""
+
+      # Heap cap: prevents V8 from ballooning into swap on the Orange Pi 3B
+      NODE_OPTIONS: --max-old-space-size=512
+
+    volumes:
+      - twenty-storage:/app/packages/twenty-server/.local-storage
+
     networks:
       - core-data_default
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 120s  # generous window for first-run migrations on SBC I/O
+
+    deploy:
+      resources:
+        limits:
+          memory: 768m
+
+    labels:
+      homepage.group:       anno-app
+      homepage.name:        Twenty CRM
+      homepage.icon:        twenty.png
+      homepage.href:        "${SERVER_URL}"
+      homepage.description: Open-source CRM
+      homepage.server:      anno-app
+      homepage.container:   twenty_server
+
+
+  # ── Background Job Worker ──────────────────────────────────────────────────
+  # Same image, different entrypoint. Processes Bull MQ queues (email sync,
+  # webhooks, background tasks). Shares the storage volume with the server.
+  # Does NOT run migrations or register cron jobs — server owns those.
+  twenty-worker:
+    image: twentycrm/twenty:latest
+    platform: linux/arm64
+    container_name: twenty_worker
+    restart: unless-stopped
+    command: ["yarn", "worker:prod"]
+    env_file: .env
+    environment:
+      NODE_ENV: production
+
+      PG_DATABASE_URL: ${PG_DATABASE_URL}
+      REDIS_URL:       ${REDIS_URL}
+      APP_SECRET:      ${APP_SECRET}
+
+      STORAGE_TYPE:       local
+      STORAGE_LOCAL_PATH: /app/packages/twenty-server/.local-storage
+
+      # Worker must NOT re-run migrations or re-register crons
+      DISABLE_DB_MIGRATIONS:          "true"
+      DISABLE_CRON_JOBS_REGISTRATION: "true"
+
+      NODE_OPTIONS: --max-old-space-size=512
+
+    volumes:
+      - twenty-storage:/app/packages/twenty-server/.local-storage
+
+    networks:
+      - core-data_default
+
+    depends_on:
+      twenty-server:
+        condition: service_healthy   # waits for server + migrations to finish
+
+    deploy:
+      resources:
+        limits:
+          memory: 768m
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+volumes:
+  twenty-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${STORAGE_HOST_PATH:-./data/storage}
 
 networks:
   core-data_default:
