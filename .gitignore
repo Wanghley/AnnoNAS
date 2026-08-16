@@ -82,7 +82,7 @@ backups/
 
 # But include examples
 !.env.example
-<<<<<<< HEAD
+!docker-compose.override.yml.example
 
 # ignore data folder from Docker
 **/ha-config/
@@ -91,6 +91,5 @@ backups/
 **/voice_profiles/
 **/data/
 **/open-webui-data/
-=======
-!docker-compose.override.yml.example
->>>>>>> 6ec8cfc16eedc5e2388231d4934338a8543edde0
+**/couchdb-data/
+**/mediafiles/
