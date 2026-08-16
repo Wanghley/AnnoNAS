@@ -1,0 +1,28 @@
+# Deploy this on each remote Docker host you want Homarr to monitor.
+# Then add that host's IP to DOCKER_HOSTNAMES in homarr/.env
+
+services:
+  socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: docker-socket-proxy
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:2375:2375"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      # Read-only access to containers, images, and networks
+      CONTAINERS: 1
+      SERVICES: 1
+      TASKS: 1
+      NETWORKS: 1
+      NODES: 1
+      INFO: 1
+      IMAGES: 1
+      VOLUMES: 1
+      # Allow container lifecycle actions (needed for Homarr start/stop/restart)
+      ALLOW_START: 1
+      ALLOW_STOP: 1
+      ALLOW_RESTART: 1
+      # Disable write access beyond the above
+      POST: 0

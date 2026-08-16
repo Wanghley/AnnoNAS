@@ -1,0 +1,27 @@
+services:
+  homarr:
+    image: ghcr.io/homarr-labs/homarr:latest
+    container_name: homarr
+    restart: unless-stopped
+    ports:
+      - "7575:7575"
+    volumes:
+      - ./data:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    environment:
+      # Comma-separated list of remote Docker hosts running socket-proxy
+      # Add each remote host IP and its corresponding port (default 2375)
+      # Example: - DOCKER_HOSTNAMES=192.168.1.10,192.168.1.20
+      #          - DOCKER_PORTS=2375,2375
+      - DOCKER_HOSTNAMES=${DOCKER_HOSTNAMES:-}
+      - DOCKER_PORTS=${DOCKER_PORTS:-}
+    networks:
+      - default
+      - annogrid
+
+networks:
+  annogrid:
+    name: annogrid
+    external: true
