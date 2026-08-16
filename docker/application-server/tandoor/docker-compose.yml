@@ -1,0 +1,14 @@
+services:
+  web_recipes:
+    restart: always
+    image: vabene1111/recipes
+    env_file:
+      - ./.env
+    ports:
+      - 7001:80
+    volumes:
+      - staticfiles:/opt/recipes/staticfiles
+      - ./mediafiles:/opt/recipes/mediafiles
+
+volumes:
+  staticfiles:
