@@ -137,6 +137,9 @@ services:
       - GF_DATABASE_USER=${DB_USER}
       - GF_DATABASE_PASSWORD=${DB_PASSWORD}
       - GF_DATABASE_SSL_MODE=disable
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
     env_file: .env
     depends_on:
       - prometheus
