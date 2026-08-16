@@ -30,9 +30,15 @@ services:
       homepage.description: Container management
       homepage.server: anno-app
       homepage.container: portainer
+    networks:
+      - default
+      - annogrid
 volumes:
   portainer_data:
     name: portainer_data
 networks:
   default:
     name: portainer_network
+  annogrid:
+    name: annogrid
+    external: true
